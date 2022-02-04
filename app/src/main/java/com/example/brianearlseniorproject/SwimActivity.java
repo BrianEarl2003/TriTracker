@@ -19,8 +19,8 @@ public class SwimActivity extends AppCompatActivity {
     ImageButton ib_swimHome;
     EditText et_swimDate, et_swimTime, et_swimLaps, et_lapDistance, et_swimDistance;
     ListView lv_swimList;
-    ArrayAdapter swimArrayAdapter;
-    DataBaseHelper swimDataBaseHelper;
+    ArrayAdapter arrayAdapter;
+    DataBaseHelper dataBaseHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,8 +35,8 @@ public class SwimActivity extends AppCompatActivity {
         et_lapDistance = findViewById(R.id.et_lapDistance);
         et_swimDistance = findViewById(R.id.et_swimDistance);
         lv_swimList = findViewById(R.id.lv_runList);
-        swimDataBaseHelper = new DataBaseHelper(SwimActivity.this);
-        ShowSwimsOnListView(swimDataBaseHelper);
+        dataBaseHelper = new DataBaseHelper(SwimActivity.this);
+        ShowSwimsOnListView(dataBaseHelper);
 
         //button Listeners for the home, add and view all buttons
         ib_swimHome.setOnClickListener(new View.OnClickListener() {
@@ -58,10 +58,10 @@ public class SwimActivity extends AppCompatActivity {
                     Toast.makeText(SwimActivity.this, "Error adding workout", Toast.LENGTH_SHORT).show();
                     swimModel = new SwimModel(-1, "01-01-2000", "00:00", 0, 0, 0);
                 }
-                DataBaseHelper swimDataBaseHelper = new DataBaseHelper(SwimActivity.this);
-                boolean success = swimDataBaseHelper.addSwimWorkout(swimModel);
+                DataBaseHelper dataBaseHelper = new DataBaseHelper(SwimActivity.this);
+                boolean success = dataBaseHelper.addSwimWorkout(swimModel);
                 Toast.makeText(SwimActivity.this, "Success= " + success, Toast.LENGTH_SHORT).show();
-                ShowSwimsOnListView(swimDataBaseHelper);
+                ShowSwimsOnListView(dataBaseHelper);
             }
         });
 
@@ -69,15 +69,15 @@ public class SwimActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 SwimModel clickedSwim = (SwimModel) parent.getItemAtPosition(position);
-                swimDataBaseHelper.deleteSwim(clickedSwim);
-                ShowSwimsOnListView(swimDataBaseHelper);
+                dataBaseHelper.deleteSwim(clickedSwim);
+                ShowSwimsOnListView(dataBaseHelper);
                 Toast.makeText(SwimActivity.this, "Deleted" + clickedSwim.toString(), Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    private void ShowSwimsOnListView (DataBaseHelper swimDataBaseHelper2) {
-        swimArrayAdapter = new ArrayAdapter<SwimModel>(SwimActivity.this, android.R.layout.simple_list_item_1, swimDataBaseHelper2.getAllSwimWorkouts());
-        lv_swimList.setAdapter(swimArrayAdapter);
+    private void ShowSwimsOnListView (DataBaseHelper dataBaseHelper2) {
+        arrayAdapter = new ArrayAdapter<SwimModel>(SwimActivity.this, android.R.layout.simple_list_item_1, dataBaseHelper2.getAllSwimWorkouts());
+        lv_swimList.setAdapter(arrayAdapter);
     }
 }

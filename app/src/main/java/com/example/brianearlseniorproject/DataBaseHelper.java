@@ -39,20 +39,21 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     //this is called the first time a database is accessed. There should be code in here to create a new database.
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String createSwimTableStatement = "CREATE TABLE " + SWIM_TABLE + "(" + SWIM_ID +
+        String createSwimTableStatement = "CREATE TABLE IF NOT EXISTS " + SWIM_TABLE + "(" + SWIM_ID +
                 " INTEGER PRIMARY KEY AUTOINCREMENT, " + SWIM_DATE + " TEXT, " + SWIM_TIME +
                 " TEXT, " + SWIM_LAPS + " REAL, " + SWIM_LAP_DISTANCE + " REAL, " +
                 SWIM_DISTANCE + " REAL)";
-        db.execSQL(createSwimTableStatement);
 
-        String createBikeTableStatement = "CREATE TABLE " + BIKE_TABLE + "(" + BIKE_ID +
+        String createBikeTableStatement = "CREATE TABLE IF NOT EXISTS " + BIKE_TABLE + "(" + BIKE_ID +
                 " INTEGER PRIMARY KEY AUTOINCREMENT, " + BIKE_DATE + " TEXT, " + BIKE_TIME +
                 " TEXT, " + BIKE_DISTANCE + " REAL)";
-        db.execSQL(createBikeTableStatement);
 
-        String createRunTableStatement = "CREATE TABLE " + RUN_TABLE + "(" + RUN_ID +
+        String createRunTableStatement = "CREATE TABLE IF NOT EXISTS " + RUN_TABLE + "(" + RUN_ID +
                 " INTEGER PRIMARY KEY AUTOINCREMENT, " + RUN_DATE + " TEXT, " + RUN_TIME +
                 " TEXT, " + RUN_DISTANCE + " REAL)";
+
+        db.execSQL(createSwimTableStatement);
+        db.execSQL(createBikeTableStatement);
         db.execSQL(createRunTableStatement);
     }
 

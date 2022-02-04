@@ -19,8 +19,8 @@ public class RunActivity extends AppCompatActivity {
     ImageButton ib_runHome;
     EditText et_runDate, et_runTime, et_runDistance;
     ListView lv_runList;
-    ArrayAdapter runArrayAdapter;
-    DataBaseHelper runDataBaseHelper;
+    ArrayAdapter arrayAdapter;
+    DataBaseHelper dataBaseHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,8 +33,8 @@ public class RunActivity extends AppCompatActivity {
         et_runTime = findViewById(R.id.et_runTime);
         et_runDistance = findViewById(R.id.et_runDistance);
         lv_runList = findViewById(R.id.lv_runList);
-        runDataBaseHelper = new DataBaseHelper(RunActivity.this);
-        ShowRunsOnListView(runDataBaseHelper);
+        dataBaseHelper = new DataBaseHelper(RunActivity.this);
+        ShowRunsOnListView(dataBaseHelper);
 
         //button Listeners for the home, add and view all buttons
         ib_runHome.setOnClickListener(new View.OnClickListener() {
@@ -67,14 +67,14 @@ public class RunActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 RunModel clickedRun = (RunModel) parent.getItemAtPosition(position);
-                runDataBaseHelper.deleteRun(clickedRun);
-                ShowRunsOnListView(runDataBaseHelper);
+                dataBaseHelper.deleteRun(clickedRun);
+                ShowRunsOnListView(dataBaseHelper);
                 Toast.makeText(RunActivity.this, "Deleted" + clickedRun.toString(), Toast.LENGTH_SHORT).show();
             }
         });
     }
     private void ShowRunsOnListView (DataBaseHelper runDataBaseHelper2) {
-        runArrayAdapter = new ArrayAdapter<RunModel>(RunActivity.this, android.R.layout.simple_list_item_1, runDataBaseHelper2.getAllRunWorkouts());
-        lv_runList.setAdapter(runArrayAdapter);
+        arrayAdapter = new ArrayAdapter<RunModel>(RunActivity.this, android.R.layout.simple_list_item_1, runDataBaseHelper2.getAllRunWorkouts());
+        lv_runList.setAdapter(arrayAdapter);
     }
 }

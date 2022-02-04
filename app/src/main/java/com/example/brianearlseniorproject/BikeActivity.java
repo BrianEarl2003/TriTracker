@@ -19,8 +19,8 @@ public class BikeActivity extends AppCompatActivity {
     ImageButton ib_bikeHome;
     EditText et_bikeDate, et_bikeTime, et_bikeDistance;
     ListView lv_bikeList;
-    ArrayAdapter bikeArrayAdapter;
-    DataBaseHelper bikeDataBaseHelper;
+    ArrayAdapter arrayAdapter;
+    DataBaseHelper dataBaseHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,8 +33,8 @@ public class BikeActivity extends AppCompatActivity {
         et_bikeTime = findViewById(R.id.et_bikeTime);
         et_bikeDistance = findViewById(R.id.et_bikeDistance);
         lv_bikeList = findViewById(R.id.lv_runList);
-        bikeDataBaseHelper = new DataBaseHelper(BikeActivity.this);
-        ShowBikesOnListView(bikeDataBaseHelper);
+        dataBaseHelper = new DataBaseHelper(BikeActivity.this);
+        ShowBikesOnListView(dataBaseHelper);
 
         //button Listeners for the home, add and view all buttons
         ib_bikeHome.setOnClickListener(new View.OnClickListener() {
@@ -56,10 +56,10 @@ public class BikeActivity extends AppCompatActivity {
                     Toast.makeText(BikeActivity.this, "Error adding workout", Toast.LENGTH_SHORT).show();
                     bikeModel = new BikeModel(-1, "01-01-2000", "00:00", 0);
                 }
-                DataBaseHelper bikeDataBaseHelper = new DataBaseHelper(BikeActivity.this);
-                boolean success = bikeDataBaseHelper.addBikeWorkout(bikeModel);
+                DataBaseHelper dataBaseHelper = new DataBaseHelper(BikeActivity.this);
+                boolean success = dataBaseHelper.addBikeWorkout(bikeModel);
                 Toast.makeText(BikeActivity.this, "Success= " + success, Toast.LENGTH_SHORT).show();
-                ShowBikesOnListView(bikeDataBaseHelper);
+                ShowBikesOnListView(dataBaseHelper);
             }
         });
 
@@ -67,15 +67,15 @@ public class BikeActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 BikeModel clickedBike = (BikeModel) parent.getItemAtPosition(position);
-                bikeDataBaseHelper.deleteBike(clickedBike);
-                ShowBikesOnListView(bikeDataBaseHelper);
+                dataBaseHelper.deleteBike(clickedBike);
+                ShowBikesOnListView(dataBaseHelper);
                 Toast.makeText(BikeActivity.this, "Deleted" + clickedBike.toString(), Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    private void ShowBikesOnListView (DataBaseHelper bikeDataBaseHelper2) {
-        bikeArrayAdapter = new ArrayAdapter<BikeModel>(BikeActivity.this, android.R.layout.simple_list_item_1, bikeDataBaseHelper2.getAllBikeWorkouts());
-        lv_bikeList.setAdapter(bikeArrayAdapter);
+    private void ShowBikesOnListView (DataBaseHelper dataBaseHelper2) {
+        arrayAdapter = new ArrayAdapter<BikeModel>(BikeActivity.this, android.R.layout.simple_list_item_1, dataBaseHelper2.getAllBikeWorkouts());
+        lv_bikeList.setAdapter(arrayAdapter);
     }
 }
