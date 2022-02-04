@@ -1,0 +1,366 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:id="@+id/tv_G_bike_distance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-medium"
+        android:text="Distance"
+        app:layout_constraintEnd_toStartOf="@+id/tv_G_run_distance"
+        app:layout_constraintStart_toEndOf="@+id/tv_G_swim_distance"
+        app:layout_constraintTop_toBottomOf="@+id/tv_goals" />
+
+    <TextView
+        android:id="@+id/tv_G_bike_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-medium"
+        android:text="Time"
+        app:layout_constraintEnd_toStartOf="@+id/tv_G_run_time"
+        app:layout_constraintStart_toEndOf="@+id/tv_G_swim_time"
+        app:layout_constraintTop_toBottomOf="@+id/tv_G_bike_miles" />
+
+    <TextView
+        android:id="@+id/tv_G_swim_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="48dp"
+        android:layout_marginLeft="48dp"
+        android:fontFamily="sans-serif-medium"
+        android:text="Time"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tv_G_bike_time" />
+
+    <TextView
+        android:id="@+id/tv_G_run_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="48dp"
+        android:layout_marginRight="48dp"
+        android:fontFamily="sans-serif-medium"
+        android:text="Time"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tv_G_bike_time" />
+
+    <TextView
+        android:id="@+id/tv_G_bike_miles"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-black"
+        android:text="0 miles"
+        app:layout_constraintEnd_toStartOf="@+id/tv_G_run_miles"
+        app:layout_constraintStart_toEndOf="@+id/tv_G_swim_miles"
+        app:layout_constraintTop_toBottomOf="@+id/tv_G_bike_distance" />
+
+    <TextView
+        android:id="@+id/tv_G_bike_HM"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-black"
+        android:text="00:00"
+        app:layout_constraintEnd_toStartOf="@+id/tv_G_run_HM"
+        app:layout_constraintStart_toEndOf="@+id/tv_G_swim_HM"
+        app:layout_constraintTop_toBottomOf="@+id/tv_G_bike_time" />
+
+    <TextView
+        android:id="@+id/tv_G_swim_HM"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="48dp"
+        android:layout_marginLeft="48dp"
+        android:fontFamily="sans-serif-black"
+        android:text="00:00"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tv_G_bike_HM" />
+
+    <TextView
+        android:id="@+id/tv_G_run_miles"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="48dp"
+        android:layout_marginRight="48dp"
+        android:fontFamily="sans-serif-black"
+        android:text="0 miles"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tv_G_bike_miles" />
+
+    <TextView
+        android:id="@+id/tv_G_swim_miles"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="48dp"
+        android:layout_marginLeft="48dp"
+        android:fontFamily="sans-serif-black"
+        android:text="0 miles"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tv_G_bike_miles" />
+
+    <TextView
+        android:id="@+id/tv_G_run_HM"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="48dp"
+        android:layout_marginRight="48dp"
+        android:fontFamily="sans-serif-black"
+        android:text="00:00"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tv_G_bike_HM" />
+
+    <TextView
+        android:id="@+id/tv_G_run_distance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="48dp"
+        android:layout_marginRight="48dp"
+        android:fontFamily="sans-serif-medium"
+        android:text="Distance"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tv_G_bike_distance" />
+
+    <TextView
+        android:id="@+id/tv_G_swim_distance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="48dp"
+        android:layout_marginLeft="48dp"
+        android:fontFamily="sans-serif-medium"
+        android:text="Distance"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tv_G_bike_distance" />
+
+    <TextView
+        android:id="@+id/tv_PB_run_distance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="48dp"
+        android:layout_marginRight="48dp"
+        android:fontFamily="sans-serif-medium"
+        android:text="Distance"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tv_PB_bike_distance" />
+
+    <TextView
+        android:id="@+id/tv_PB_bike_distance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-medium"
+        android:text="Distance"
+        app:layout_constraintEnd_toStartOf="@+id/tv_PB_run_distance"
+        app:layout_constraintStart_toEndOf="@+id/tv_PB_swim_distance"
+        app:layout_constraintTop_toBottomOf="@+id/tv_personalBest" />
+
+    <TextView
+        android:id="@+id/tv_PB_bike_miles"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-black"
+        android:text="0 miles"
+        app:layout_constraintEnd_toStartOf="@+id/tv_PB_run_miles"
+        app:layout_constraintStart_toEndOf="@+id/tv_PB_swim_miles"
+        app:layout_constraintTop_toBottomOf="@+id/tv_PB_bike_distance" />
+
+    <TextView
+        android:id="@+id/tv_PB_swim_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="48dp"
+        android:layout_marginLeft="48dp"
+        android:fontFamily="sans-serif-medium"
+        android:text="Time"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tv_PB_bike_time" />
+
+    <TextView
+        android:id="@+id/tv_PB_bike_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-medium"
+        android:text="Time"
+        app:layout_constraintEnd_toStartOf="@+id/tv_PB_run_time"
+        app:layout_constraintStart_toEndOf="@+id/tv_PB_swim_time"
+        app:layout_constraintTop_toBottomOf="@+id/tv_PB_bike_miles" />
+
+    <TextView
+        android:id="@+id/tv_PB_run_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="48dp"
+        android:layout_marginRight="48dp"
+        android:fontFamily="sans-serif-medium"
+        android:text="Time"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tv_PB_bike_time" />
+
+    <TextView
+        android:id="@+id/tv_PB_bike_HM"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-black"
+        android:text="00:00"
+        app:layout_constraintEnd_toStartOf="@+id/tv_PB_run_HM"
+        app:layout_constraintStart_toEndOf="@+id/tv_PB_swim_HM"
+        app:layout_constraintTop_toBottomOf="@+id/tv_PB_bike_time" />
+
+    <TextView
+        android:id="@+id/tv_PB_swim_miles"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="48dp"
+        android:layout_marginLeft="48dp"
+        android:fontFamily="sans-serif-black"
+        android:text="0 miles"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tv_PB_bike_miles" />
+
+    <TextView
+        android:id="@+id/tv_PB_run_miles"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="48dp"
+        android:layout_marginRight="48dp"
+        android:fontFamily="sans-serif-black"
+        android:text="0 miles"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tv_PB_bike_miles" />
+
+    <TextView
+        android:id="@+id/tv_PB_run_HM"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="48dp"
+        android:layout_marginRight="48dp"
+        android:fontFamily="sans-serif-black"
+        android:text="00:00"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tv_PB_bike_HM" />
+
+    <TextView
+        android:id="@+id/tv_PB_swim_HM"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="48dp"
+        android:layout_marginLeft="48dp"
+        android:fontFamily="sans-serif-black"
+        android:text="00:00"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tv_PB_bike_HM" />
+
+    <ImageView
+        android:id="@+id/iv_TriLogo"
+        android:layout_width="96dp"
+        android:layout_height="85dp"
+        android:layout_marginTop="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/tri" />
+
+    <ImageButton
+        android:id="@+id/ib_preferences"
+        android:layout_width="96dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="16dp"
+        android:background="@color/white"
+        app:layout_constraintEnd_toStartOf="@+id/iv_TriLogo"
+        app:layout_constraintHorizontal_bias="0.533"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@android:drawable/ic_menu_preferences" />
+
+    <Button
+        android:id="@+id/btn_log"
+        android:layout_width="96dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/log"
+        android:textColor="@color/black"
+        app:backgroundTint="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.466"
+        app:layout_constraintStart_toEndOf="@+id/iv_TriLogo"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btn_swim"
+        android:layout_width="96dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginLeft="32dp"
+        android:text="SWIM"
+        app:backgroundTint="#777272"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_bike"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iv_TriLogo" />
+
+    <Button
+        android:id="@+id/btn_bike"
+        android:layout_width="96dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="BIKE"
+        app:backgroundTint="#777272"
+        app:layout_constraintEnd_toStartOf="@+id/btn_run"
+        app:layout_constraintHorizontal_bias="0.493"
+        app:layout_constraintStart_toEndOf="@+id/btn_swim"
+        app:layout_constraintTop_toBottomOf="@+id/iv_TriLogo" />
+
+    <Button
+        android:id="@+id/btn_run"
+        android:layout_width="96dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:layout_marginRight="32dp"
+        android:text="RUN"
+        app:backgroundTint="#777272"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_bike"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iv_TriLogo" />
+
+    <TextView
+        android:id="@+id/tv_personalBest"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:background="#009688"
+        android:fontFamily="sans-serif-black"
+        android:gravity="center_horizontal"
+        android:text="PERSONAL BEST"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_bike" />
+
+    <TextView
+        android:id="@+id/tv_goals"
+        android:layout_width="411dp"
+        android:layout_height="wrap_content"
+        android:background="#009688"
+        android:fontFamily="sans-serif-black"
+        android:gravity="center_horizontal"
+        android:text="GOALS"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_PB_bike_HM" />
+
+    <TextView
+        android:id="@+id/tv_PB_swim_distance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="48dp"
+        android:layout_marginLeft="48dp"
+        android:fontFamily="sans-serif-medium"
+        android:text="Distance"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tv_PB_bike_distance" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
