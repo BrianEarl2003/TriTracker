@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.Switch;
 import android.widget.Toast;
 
 public class RunActivity extends AppCompatActivity {
@@ -19,6 +20,7 @@ public class RunActivity extends AppCompatActivity {
     ImageButton ib_runHome;
     EditText et_runDate, et_runTime, et_runDistance;
     ListView lv_runList;
+    Switch sw_trackRun;
     ArrayAdapter arrayAdapter;
     DataBaseHelper dataBaseHelper;
 
@@ -33,8 +35,27 @@ public class RunActivity extends AppCompatActivity {
         et_runTime = findViewById(R.id.et_runTime);
         et_runDistance = findViewById(R.id.et_runDistance);
         lv_runList = findViewById(R.id.lv_runList);
+        sw_trackRun = findViewById(R.id.sw_trackRun);
         dataBaseHelper = new DataBaseHelper(RunActivity.this);
         ShowRunsOnListView(dataBaseHelper);
+
+        sw_trackRun.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                //Is the switch is on?
+                boolean on = ((Switch) v).isChecked();
+                if(on)
+                {
+                    //Do something when switch is on/checked
+                    sw_trackRun.setText("Tracking On");
+                }
+                else
+                {
+                    //Do something when switch is off/unchecked
+                    sw_trackRun.setText("Tracking Off");
+                }
+            }
+        });
 
         //button Listeners for the home, add and view all buttons
         ib_runHome.setOnClickListener(new View.OnClickListener() {
