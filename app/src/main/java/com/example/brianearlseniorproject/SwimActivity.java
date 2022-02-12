@@ -3,14 +3,17 @@ package com.example.brianearlseniorproject;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class SwimActivity extends AppCompatActivity {
@@ -77,7 +80,23 @@ public class SwimActivity extends AppCompatActivity {
     }
 
     private void ShowSwimsOnListView (DataBaseHelper dataBaseHelper2) {
-        arrayAdapter = new ArrayAdapter<SwimModel>(SwimActivity.this, android.R.layout.simple_list_item_1, dataBaseHelper2.getAllSwimWorkouts());
+        arrayAdapter = new ArrayAdapter<SwimModel>(SwimActivity.this, android.R.layout.simple_list_item_1, dataBaseHelper2.getAllSwimWorkouts()){
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent){
+                // Get the Item from ListView
+                View view = super.getView(position, convertView, parent);
+
+                // Initialize a TextView for ListView each Item
+                TextView tv = (TextView) view.findViewById(android.R.id.text1);
+
+                // Set the text color of TextView (ListView Item)
+                tv.setTextColor(Color.BLACK);
+
+                // Generate ListView Item using TextView
+                return view;
+            }
+        };
+
         lv_swimList.setAdapter(arrayAdapter);
     }
 }
