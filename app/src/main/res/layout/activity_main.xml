@@ -363,4 +363,30 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/tv_PB_bike_distance" />
 
+    <ImageButton
+        android:id="@+id/ib_swim_goal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toStartOf="@+id/ib_bike_goal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_G_swim_HM"
+        app:srcCompat="@drawable/swim" />
+
+    <ImageButton
+        android:id="@+id/ib_bike_goal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/tv_G_bike_HM"
+        app:srcCompat="@drawable/bike"
+        tools:layout_editor_absoluteX="157dp" />
+
+    <ImageButton
+        android:id="@+id/ib_run_goal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/ib_bike_goal"
+        app:layout_constraintTop_toBottomOf="@+id/tv_G_run_HM"
+        app:srcCompat="@drawable/run" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
