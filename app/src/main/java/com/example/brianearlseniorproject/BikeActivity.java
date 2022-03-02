@@ -50,11 +50,19 @@ public class BikeActivity extends AppCompatActivity {
             public void onClick(View view) {
                 BikeModel bikeModel;
                 try {
-                    bikeModel = new BikeModel(-1, et_bikeDate.getText().toString(), et_bikeTime.getText().toString(), Float.parseFloat(et_bikeDistance.getText().toString()));
+                    String time = et_bikeTime.getText().toString();
+                    String tArr[] = time.split(":");
+                    float h, mm, ss;
+                    mm = Float.parseFloat(tArr[0]);
+                    ss = Float.parseFloat(tArr[1]);
+                    h = ((ss / 60) + mm)/60;
+                    float distance = Float.parseFloat(et_bikeDistance.getText().toString());
+                    float speed = distance / h;
+                    bikeModel = new BikeModel(-1, et_bikeDate.getText().toString(), time, distance, speed);
                     Toast.makeText(BikeActivity.this, bikeModel.toString(), Toast.LENGTH_SHORT).show();
                 } catch (Exception e) {
                     Toast.makeText(BikeActivity.this, "Error adding workout", Toast.LENGTH_SHORT).show();
-                    bikeModel = new BikeModel(-1, "01-01-2000", "00:00", 0);
+                    bikeModel = new BikeModel(-1, "01-01-2000", "00:00", 0, 0);
                 }
                 DataBaseHelper dataBaseHelper = new DataBaseHelper(BikeActivity.this);
                 boolean success = dataBaseHelper.addBikeWorkout(bikeModel);

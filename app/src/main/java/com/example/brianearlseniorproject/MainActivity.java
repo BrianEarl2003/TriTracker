@@ -16,6 +16,7 @@ public class MainActivity extends AppCompatActivity {
             tv_PB_swim_HM, tv_PB_bike_HM, tv_PB_run_HM,
             tv_G_swim_miles, tv_G_bike_miles, tv_G_run_miles,
             tv_G_swim_HM, tv_G_bike_HM, tv_G_run_HM;
+    DataBaseHelper dataBaseHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

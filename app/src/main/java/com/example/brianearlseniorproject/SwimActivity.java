@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -32,7 +34,9 @@ public class SwimActivity extends AppCompatActivity {
         et_swimDate = findViewById(R.id.et_swimDate);
         et_swimTime = findViewById(R.id.et_swimTime);
         et_swimLaps = findViewById(R.id.et_swimLaps);
+        //et_swimLaps.setText(0);
         et_lapDistance = findViewById(R.id.et_lapDistance);
+        //et_lapDistance.setText(0);
         et_swimDistance = findViewById(R.id.et_swimDistance);
         lv_swimList = findViewById(R.id.lv_runList);
         dataBaseHelper = new DataBaseHelper(SwimActivity.this);
@@ -72,6 +76,36 @@ public class SwimActivity extends AppCompatActivity {
                 dataBaseHelper.deleteSwim(clickedSwim);
                 ShowSwimsOnListView(dataBaseHelper);
                 Toast.makeText(SwimActivity.this, "Deleted" + clickedSwim.toString(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        et_swimLaps.addTextChangedListener(new TextWatcher() {
+
+            public void afterTextChanged(Editable editable) {
+            }
+
+            public void beforeTextChanged(CharSequence s, int start,
+                                          int count, int after) {
+            }
+
+            public void onTextChanged(CharSequence s, int start,
+                                      int before, int count) {
+                et_swimDistance.setText(Float.toString(Float.parseFloat(et_swimLaps.getText().toString()) * Float.parseFloat(et_lapDistance.getText().toString())));
+            }
+        });
+
+        et_lapDistance.addTextChangedListener(new TextWatcher() {
+
+            public void afterTextChanged(Editable editable) {
+            }
+
+            public void beforeTextChanged(CharSequence s, int start,
+                                          int count, int after) {
+            }
+
+            public void onTextChanged(CharSequence s, int start,
+                                      int before, int count) {
+                et_swimDistance.setText(Float.toString(Float.parseFloat(et_swimLaps.getText().toString()) * Float.parseFloat(et_lapDistance.getText().toString())));
             }
         });
     }

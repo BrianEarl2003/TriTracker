@@ -25,6 +25,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public static final String BIKE_DATE = "BIKE_DATE";
     public static final String BIKE_TIME = "BIKE_TIME";
     public static final String BIKE_DISTANCE = "BIKE_DISTANCE";
+    public static final String BIKE_SPEED = "BIKE_SPEED";
+
 
     public static final String RUN_TABLE = "RUN_TABLE";
     public static final String RUN_ID = "RUN_ID";
@@ -46,7 +48,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
         String createBikeTableStatement = "CREATE TABLE IF NOT EXISTS " + BIKE_TABLE + "(" + BIKE_ID +
                 " INTEGER PRIMARY KEY AUTOINCREMENT, " + BIKE_DATE + " TEXT, " + BIKE_TIME +
-                " TEXT, " + BIKE_DISTANCE + " REAL)";
+                " TEXT, " + BIKE_DISTANCE + " REAL, " + BIKE_SPEED + "REAL)";
 
         String createRunTableStatement = "CREATE TABLE IF NOT EXISTS " + RUN_TABLE + "(" + RUN_ID +
                 " INTEGER PRIMARY KEY AUTOINCREMENT, " + RUN_DATE + " TEXT, " + RUN_TIME +
@@ -86,6 +88,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         cv.put(BIKE_DATE, bikeModel.getBike_date());
         cv.put(BIKE_TIME, bikeModel.getBike_time());
         cv.put(BIKE_DISTANCE, bikeModel.getBike_distance());
+        cv.put(BIKE_SPEED, bikeModel.getBike_speed());
 
         long insert = db.insert(BIKE_TABLE, null, cv);
         if (insert == -1) {
@@ -200,8 +203,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 String bikeDate = cursor.getString(1);
                 String bikeTime = cursor.getString(2);
                 Float bikeDistance = cursor.getFloat(3);
+                Float bikeSpeed = cursor.getFloat(4);
 
-                BikeModel newBikeWorkout = new BikeModel(bikeID, bikeDate, bikeTime, bikeDistance);
+                BikeModel newBikeWorkout = new BikeModel(bikeID, bikeDate, bikeTime, bikeDistance, bikeSpeed);
                 returnList.add(newBikeWorkout);
             } while (cursor.moveToNext());
         } else {
@@ -211,6 +215,32 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         cursor.close();
         db.close();
         return returnList;
+    }
+
+    public BikeModel getBestBikeWorkouts() {
+        BikeModel bestBikeWorkout = null;
+        //get data from database
+        String queryString = "SELECT * FROM " + BIKE_TABLE;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(queryString, null);
+        if (cursor.moveToFirst()) {
+            //loop through the cursor (result set) and create new bike objects. Put them into the return list.
+            do {
+                int bikeID = cursor.getInt(0);
+                String bikeDate = cursor.getString(1);
+                String bikeTime = cursor.getString(2);
+                Float bikeDistance = cursor.getFloat(3);
+                Float bikeSpeed = cursor.getFloat(4);
+
+                bestBikeWorkout = new BikeModel(bikeID, bikeDate, bikeTime, bikeDistance, bikeSpeed);
+            } while (cursor.moveToNext());
+        } else {
+            //failure. do not add anything to the list.
+        }
+        //close both the cursor and the db when done.
+        cursor.close();
+        db.close();
+        return bestBikeWorkout;
     }
 
     public List<RunModel> getAllRunWorkouts() {
