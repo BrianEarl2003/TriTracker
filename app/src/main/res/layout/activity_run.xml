@@ -10,7 +10,7 @@
         android:id="@+id/lv_runList"
         android:layout_width="407dp"
         android:layout_height="494dp"
-        android:background="@drawable/run"
+        android:background="@drawable/run1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/et_runDistance" />

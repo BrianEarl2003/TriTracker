@@ -3,6 +3,7 @@ package com.example.brianearlseniorproject;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -13,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class SwimActivity extends AppCompatActivity {
@@ -56,11 +58,20 @@ public class SwimActivity extends AppCompatActivity {
             public void onClick(View view) {
                 SwimModel swimModel;
                 try {
-                    swimModel = new SwimModel(-1, et_swimDate.getText().toString(), et_swimTime.getText().toString(), Float.parseFloat(et_swimLaps.getText().toString()), Float.parseFloat(et_lapDistance.getText().toString()), Float.parseFloat(et_swimDistance.getText().toString()));
+                    String time = et_swimTime.getText().toString();
+                    String tArr[] = time.split(":");
+                    float h, mm, ss;
+                    mm = Float.parseFloat(tArr[0]);
+                    ss = Float.parseFloat(tArr[1]);
+                    h = ((ss / 60) + mm)/60;
+                    float distance = Float.parseFloat(et_swimDistance.getText().toString());
+                    float speed = distance / h;
+                    swimModel = new SwimModel(-1, et_swimDate.getText().toString(), et_swimTime.getText().toString(), Float.parseFloat(et_swimLaps.getText().toString()),
+                            Float.parseFloat(et_lapDistance.getText().toString()), Float.parseFloat(et_swimDistance.getText().toString()), speed);
                     Toast.makeText(SwimActivity.this, swimModel.toString(), Toast.LENGTH_SHORT).show();
                 } catch (Exception e) {
                     Toast.makeText(SwimActivity.this, "Error adding workout", Toast.LENGTH_SHORT).show();
-                    swimModel = new SwimModel(-1, "01-01-2000", "00:00", 0, 0, 0);
+                    swimModel = new SwimModel(-1, "01-01-2000", "00:00", 0, 0, 0, 0);
                 }
                 DataBaseHelper dataBaseHelper = new DataBaseHelper(SwimActivity.this);
                 boolean success = dataBaseHelper.addSwimWorkout(swimModel);
@@ -79,39 +90,48 @@ public class SwimActivity extends AppCompatActivity {
             }
         });
 
-        et_swimLaps.addTextChangedListener(new TextWatcher() {
+        TextWatcher textWatcher = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
             public void afterTextChanged(Editable editable) {
+                if (!et_swimLaps.getText().toString().isEmpty() && !et_lapDistance.getText().toString().isEmpty())
+                    et_swimDistance.setText(Float.toString(Float.parseFloat(et_swimLaps.getText().toString()) * Float.parseFloat(et_lapDistance.getText().toString())));
+                else
+                    et_swimDistance.setText("");
             }
+        };
 
-            public void beforeTextChanged(CharSequence s, int start,
-                                          int count, int after) {
-            }
+        et_swimLaps.addTextChangedListener(textWatcher);
 
-            public void onTextChanged(CharSequence s, int start,
-                                      int before, int count) {
-                et_swimDistance.setText(Float.toString(Float.parseFloat(et_swimLaps.getText().toString()) * Float.parseFloat(et_lapDistance.getText().toString())));
-            }
-        });
-
-        et_lapDistance.addTextChangedListener(new TextWatcher() {
-
-            public void afterTextChanged(Editable editable) {
-            }
-
-            public void beforeTextChanged(CharSequence s, int start,
-                                          int count, int after) {
-            }
-
-            public void onTextChanged(CharSequence s, int start,
-                                      int before, int count) {
-                et_swimDistance.setText(Float.toString(Float.parseFloat(et_swimLaps.getText().toString()) * Float.parseFloat(et_lapDistance.getText().toString())));
-            }
-        });
+        et_lapDistance.addTextChangedListener(textWatcher);
     }
 
     private void ShowSwimsOnListView (DataBaseHelper dataBaseHelper2) {
         arrayAdapter = new ArrayAdapter<SwimModel>(SwimActivity.this, android.R.layout.simple_list_item_1, dataBaseHelper2.getAllSwimWorkouts());
+//        @Override
+//        public View getView(int position, View convertView, ViewGroup parent){
+//            // Get the Item from ListView
+//            View view = super.getView(position, convertView, parent);
+//
+//            // Initialize a TextView for ListView each Item
+//            TextView tv = (TextView) view.findViewById(android.R.id.text1);
+//
+//            // Set the text color of TextView (ListView Item)
+//            tv.setTextColor(Color.BLACK);
+//
+//            // Generate ListView Item using TextView
+//            return view;
+//        }
+//    };
         lv_swimList.setAdapter(arrayAdapter);
     }
 }

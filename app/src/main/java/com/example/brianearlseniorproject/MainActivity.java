@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -91,5 +92,8 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
+
+        //tv_PB_bike_miles.setText((int) dataBaseHelper.getBestBikeWorkout().getBike_distance());
+        //tv_PB_bike_HM.setText(dataBaseHelper.getBestBikeWorkout().getBike_time());
     }
 }

@@ -19,6 +19,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public static final String SWIM_LAPS = "SWIM_LAPS";
     public static final String SWIM_LAP_DISTANCE = "SWIM_LAP_DISTANCE";
     public static final String SWIM_DISTANCE = "SWIM_DISTANCE";
+    public static final String SWIM_SPEED = "SWIM_SPEED";
 
     public static final String BIKE_TABLE = "BIKE_TABLE";
     public static final String BIKE_ID = "BIKE_ID";
@@ -33,6 +34,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public static final String RUN_DATE = "RUN_DATE";
     public static final String RUN_TIME = "RUN_TIME";
     public static final String RUN_DISTANCE = "RUN_DISTANCE";
+    public static final String RUN_SPEED = "RUN_SPEED";
 
     public DataBaseHelper(@Nullable Context context) {
         super(context, "TriTracker.db", null, 1);
@@ -44,15 +46,15 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         String createSwimTableStatement = "CREATE TABLE IF NOT EXISTS " + SWIM_TABLE + "(" + SWIM_ID +
                 " INTEGER PRIMARY KEY AUTOINCREMENT, " + SWIM_DATE + " TEXT, " + SWIM_TIME +
                 " TEXT, " + SWIM_LAPS + " REAL, " + SWIM_LAP_DISTANCE + " REAL, " +
-                SWIM_DISTANCE + " REAL)";
+                SWIM_DISTANCE + " REAL, " + SWIM_SPEED + " REAL)";
 
         String createBikeTableStatement = "CREATE TABLE IF NOT EXISTS " + BIKE_TABLE + "(" + BIKE_ID +
                 " INTEGER PRIMARY KEY AUTOINCREMENT, " + BIKE_DATE + " TEXT, " + BIKE_TIME +
-                " TEXT, " + BIKE_DISTANCE + " REAL, " + BIKE_SPEED + "REAL)";
+                " TEXT, " + BIKE_DISTANCE + " REAL, " + BIKE_SPEED + " REAL)";
 
         String createRunTableStatement = "CREATE TABLE IF NOT EXISTS " + RUN_TABLE + "(" + RUN_ID +
                 " INTEGER PRIMARY KEY AUTOINCREMENT, " + RUN_DATE + " TEXT, " + RUN_TIME +
-                " TEXT, " + RUN_DISTANCE + " REAL)";
+                " TEXT, " + RUN_DISTANCE + " REAL, " + RUN_SPEED + " REAL)";
 
         db.execSQL(createSwimTableStatement);
         db.execSQL(createBikeTableStatement);
@@ -72,6 +74,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         cv.put(SWIM_LAPS, swimModel.getSwim_laps());
         cv.put(SWIM_LAP_DISTANCE, swimModel.getSwim_lapDistance());
         cv.put(SWIM_DISTANCE, swimModel.getSwim_distance());
+        cv.put(SWIM_SPEED, swimModel.getSwim_speed());
 
         long insert = db.insert(SWIM_TABLE, null, cv);
         if (insert == -1) {
@@ -105,6 +108,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         cv.put(RUN_DATE, runModel.getRun_date());
         cv.put(RUN_TIME, runModel.getRun_time());
         cv.put(RUN_DISTANCE, runModel.getRun_distance());
+        cv.put(RUN_SPEED, runModel.getRun_speed());
 
         long insert = db.insert(RUN_TABLE, null, cv);
         if (insert == -1) {
@@ -177,8 +181,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 Float swimLaps = cursor.getFloat(3);
                 Float swimLapDistance = cursor.getFloat(4);
                 Float swimDistance = cursor.getFloat(5);
+                Float swimSpeed = cursor.getFloat(6);
 
-                SwimModel newSwimWorkout = new SwimModel(swimID, swimDate, swimTime, swimLaps, swimLapDistance, swimDistance);
+                SwimModel newSwimWorkout = new SwimModel(swimID, swimDate, swimTime, swimLaps, swimLapDistance, swimDistance, swimSpeed);
                 returnList.add(newSwimWorkout);
             } while (cursor.moveToNext());
         } else {
@@ -217,26 +222,19 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return returnList;
     }
 
-    public BikeModel getBestBikeWorkouts() {
-        BikeModel bestBikeWorkout = null;
+    public BikeModel getBestBikeWorkout() {
+        BikeModel bestBikeWorkout;
         //get data from database
-        String queryString = "SELECT * FROM " + BIKE_TABLE;
+        String queryString = "SELECT * FROM BIKE_TABLE WHERE BIKE_ID = 1"; //WHERE MAX(BIKE_SPEED)";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(queryString, null);
-        if (cursor.moveToFirst()) {
-            //loop through the cursor (result set) and create new bike objects. Put them into the return list.
-            do {
-                int bikeID = cursor.getInt(0);
-                String bikeDate = cursor.getString(1);
-                String bikeTime = cursor.getString(2);
-                Float bikeDistance = cursor.getFloat(3);
-                Float bikeSpeed = cursor.getFloat(4);
+        int bikeID = cursor.getInt(0);
+        String bikeDate = cursor.getString(1);
+        String bikeTime = cursor.getString(2);
+        Float bikeDistance = cursor.getFloat(3);
+        Float bikeSpeed = cursor.getFloat(4);
 
-                bestBikeWorkout = new BikeModel(bikeID, bikeDate, bikeTime, bikeDistance, bikeSpeed);
-            } while (cursor.moveToNext());
-        } else {
-            //failure. do not add anything to the list.
-        }
+        bestBikeWorkout = new BikeModel(bikeID, bikeDate, bikeTime, bikeDistance, bikeSpeed);
         //close both the cursor and the db when done.
         cursor.close();
         db.close();
@@ -256,8 +254,10 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 String runDate = cursor.getString(1);
                 String runTime = cursor.getString(2);
                 Float runDistance = cursor.getFloat(3);
+                Float runSpeed = cursor.getFloat(4);
 
-                RunModel newRunWorkout = new RunModel(runID, runDate, runTime, runDistance);
+
+                RunModel newRunWorkout = new RunModel(runID, runDate, runTime, runDistance, runSpeed);
                 returnList.add(newRunWorkout);
             } while (cursor.moveToNext());
         } else {

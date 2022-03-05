@@ -7,15 +7,17 @@ public class SwimModel {
     private float swim_laps;
     private float swim_lapDistance;
     private float swim_distance;
+    private float swim_speed;
 
     //constructors
-    public SwimModel(int swim_id, String swim_date, String swim_time, float swim_laps, float swim_lapDistance, float swim_distance) {
+    public SwimModel(int swim_id, String swim_date, String swim_time, float swim_laps, float swim_lapDistance, float swim_distance, float swim_speed) {
         this.swim_id = swim_id;
         this.swim_date = swim_date;
         this.swim_time = swim_time;
         this.swim_laps = swim_laps;
         this.swim_lapDistance = swim_lapDistance;
         this.swim_distance = swim_distance;
+        this.swim_speed = swim_speed;
     }
 
     //toString is necessary for printing the contents of a class object
@@ -23,9 +25,10 @@ public class SwimModel {
     public String toString() {
         return  "Date: " + swim_date +
                 "        Time: " + swim_time + " (MM:SS)" +
-                "\nLaps: " + swim_laps +
-                "     Lap Distance: " + swim_lapDistance + " yards" +
-                "     Total Distance: " + swim_distance + " miles";
+                "        Laps: " + swim_laps +
+                "\nLap Distance: " + swim_lapDistance + " yards" +
+                "     Total Distance: " + swim_distance + " miles " +
+                "\nSpeed: " + swim_speed + " mph";
     }
 
     //getters and setters
@@ -75,5 +78,13 @@ public class SwimModel {
 
     public void setSwim_distance(float swim_distance) {
         this.swim_distance = swim_distance;
+    }
+
+    public float getSwim_speed() {
+        return swim_speed;
+    }
+
+    public void setSwim_speed(float swim_speed) {
+        this.swim_speed = swim_speed;
     }
 }

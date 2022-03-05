@@ -5,13 +5,15 @@ public class RunModel {
     private String run_date;
     private String run_time;
     private float run_distance;
+    private float run_speed;
 
     //constructors
-    public RunModel(int run_id, String run_date, String run_time, float run_distance) {
+    public RunModel(int run_id, String run_date, String run_time, float run_distance, float run_speed) {
         this.run_id = run_id;
         this.run_date = run_date;
         this.run_time = run_time;
         this.run_distance = run_distance;
+        this.run_speed = run_speed;
     }
 
     //toString is necessary for printing the contents of a class object
@@ -19,7 +21,8 @@ public class RunModel {
     public String toString() {
         return  "Date: " + run_date +
                 "        Time: " + run_time + " (MM:SS)" +
-                "\nTotal Distance: " + run_distance + " miles";
+                "\nTotal Distance: " + run_distance + " miles " +
+                "        Speed: " + run_speed + " mph";
     }
 
     //getters and setters
@@ -53,5 +56,13 @@ public class RunModel {
 
     public void setRun_distance(float run_distance) {
         this.run_distance = run_distance;
+    }
+
+    public float getRun_speed() {
+        return run_speed;
+    }
+
+    public void setRun_speed(float run_distance) {
+        this.run_speed = run_distance;
     }
 }

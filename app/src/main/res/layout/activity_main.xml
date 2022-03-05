@@ -370,15 +370,16 @@
         app:layout_constraintEnd_toStartOf="@+id/ib_bike_goal"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_G_swim_HM"
-        app:srcCompat="@drawable/swim" />
+        app:srcCompat="@drawable/swim1" />
 
     <ImageButton
         android:id="@+id/ib_bike_goal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_G_bike_HM"
-        app:srcCompat="@drawable/bike"
-        tools:layout_editor_absoluteX="157dp" />
+        app:srcCompat="@drawable/bike" />
 
     <ImageButton
         android:id="@+id/ib_run_goal"
@@ -387,6 +388,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/ib_bike_goal"
         app:layout_constraintTop_toBottomOf="@+id/tv_G_run_HM"
-        app:srcCompat="@drawable/run" />
+        app:srcCompat="@drawable/run1" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

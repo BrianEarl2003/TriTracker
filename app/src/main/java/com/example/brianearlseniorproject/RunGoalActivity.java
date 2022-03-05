@@ -46,11 +46,11 @@ public class RunGoalActivity extends AppCompatActivity {
                     Toast.makeText(RunGoalActivity.this, runGoalModel.toString(), Toast.LENGTH_SHORT).show();
                 } catch (Exception e) {
                     Toast.makeText(RunGoalActivity.this, "Error adding workout", Toast.LENGTH_SHORT).show();
-                    runGoalModel = new RunGoalModel(-1, "01-01-2000", "00:00", 0);
+                    //runGoalModel = new RunGoalModel(-1, "01-01-2000", "00:00", 0);
                 }
                 DataBaseHelper runDataBaseHelper = new DataBaseHelper(RunGoalActivity.this);
-                boolean success = runDataBaseHelper.addRunWorkout(runGoalModel);
-                Toast.makeText(RunGoalActivity.this, "Success= " + success, Toast.LENGTH_SHORT).show();
+                //boolean success = runDataBaseHelper.addRunWorkout(runGoalModel);
+                //Toast.makeText(RunGoalActivity.this, "Success= " + success, Toast.LENGTH_SHORT).show();
             }
         });
     }
