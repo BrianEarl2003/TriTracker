@@ -32,7 +32,7 @@ public class BikeActivity extends AppCompatActivity {
         et_bikeDate = findViewById(R.id.et_bikeDate);
         et_bikeTime = findViewById(R.id.et_bikeTime);
         et_bikeDistance = findViewById(R.id.et_bikeDistance);
-        lv_bikeList = findViewById(R.id.lv_runList);
+        lv_bikeList = findViewById(R.id.lv_runList3);
         dataBaseHelper = new DataBaseHelper(BikeActivity.this);
         ShowBikesOnListView(dataBaseHelper);
 

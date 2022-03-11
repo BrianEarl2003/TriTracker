@@ -5,10 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.location.LocationManager;
+import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -26,6 +25,9 @@ import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
+
+import java.util.List;
 
 public class RunActivity extends AppCompatActivity {
     //references to buttons and other controls on the layout
@@ -41,6 +43,8 @@ public class RunActivity extends AppCompatActivity {
     FusedLocationProviderClient fusedLocationProviderClient;
     LocationRequest locationRequest;
     LocationCallback locationCallback;
+    //Location currentLocation;
+    //List<Location> savedLocations;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +56,7 @@ public class RunActivity extends AppCompatActivity {
         et_runDate = findViewById(R.id.et_runDate);
         et_runTime = findViewById(R.id.et_runTime);
         et_runDistance = findViewById(R.id.et_runDistance);
-        lv_runList = findViewById(R.id.lv_runList);
+        lv_runList = findViewById(R.id.lv_runList3);
         sw_trackRun = findViewById(R.id.sw_trackRun);
         dataBaseHelper = new DataBaseHelper(RunActivity.this);
         ShowRunsOnListView(dataBaseHelper);
@@ -65,7 +69,23 @@ public class RunActivity extends AppCompatActivity {
                 if (on) {
                     //Do something when switch is on/checked
                     sw_trackRun.setText("Tracking On");
-
+//                    fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(RunActivity.this);
+//
+                    if (ActivityCompat.checkSelfPermission(RunActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                        //user provided the permission
+                        fusedLocationProviderClient.getLastLocation().addOnSuccessListener(RunActivity.this, new OnSuccessListener<Location>() {
+                            @Override
+                            public void onSuccess(Location location) {
+                                //we got permissions. Put the values of location. XXX into the UI components
+                                //updateUIValues(location);
+                                //currentLocation = location;
+                                //MyApplication myApplication = (MyApplication)getApplicationContext();
+                                //savedLocations = myApplication.getMyLocations();
+                                //savedLocations.add(currentLocation);
+                                Toast.makeText(RunActivity.this, "Lat: " + location.getLatitude() + " Lon: " + location.getLongitude(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
                 } else {
                     //Do something when switch is off/unchecked
                     sw_trackRun.setText("Tracking Off");
@@ -118,6 +138,16 @@ public class RunActivity extends AppCompatActivity {
             }
         });
 
+        locationCallback = new LocationCallback() {
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                super.onLocationResult(locationResult);
+                //save the location
+                //Toast.makeText(RunActivity.this, String.valueOf(currentLocation.getLatitude()), Toast.LENGTH_SHORT).show();
+                //updateUIValues(locationResult.getLastLocation());
+            }
+        };
+
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         if (Build.VERSION.SDK_INT >= 23 && checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
@@ -125,15 +155,6 @@ public class RunActivity extends AppCompatActivity {
             //Req Location Permission
             startLocService();
         }
-
-        locationCallback = new LocationCallback() {
-            @Override
-            public void onLocationResult(LocationResult locationResult) {
-                super.onLocationResult(locationResult);
-                //save the location
-                //updateUIValues(locationResult.getLastLocation());
-            }
-        };
     }
 
     private void startLocService() {
@@ -151,7 +172,7 @@ public class RunActivity extends AppCompatActivity {
         locationRequest.setInterval(DEFAULT_UPDATE_INTERVAL);
         locationRequest.setFastestInterval(FAST_UPDATE_INTERVAL);
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        //fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, null); //ERROR
+        fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, null);
         //updateGPS();
     }
 

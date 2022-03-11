@@ -13,6 +13,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BrianEarlSeniorProject">
         <activity
+            android:name=".RunGoalActivity"
+            android:exported="false" />
+        <activity
+            android:name=".BikeGoalActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SwimGoalActivity"
+            android:exported="false" />
+        <activity
             android:name=".RunActivity"
             android:exported="false" />
         <activity

@@ -15,7 +15,7 @@ public class RunGoalActivity extends AppCompatActivity {
     Button btn_addRunGoal;
     ImageButton ib_runHome3;
     EditText et_runTime3, et_runDistance3;
-    DataBaseHelper dataBaseHelper;
+    DataBaseHelper runGoalDataBaseHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,31 +26,31 @@ public class RunGoalActivity extends AppCompatActivity {
         ib_runHome3 = findViewById(R.id.ib_runHome);
         et_runTime3 = findViewById(R.id.et_runTime);
         et_runDistance3 = findViewById(R.id.et_runDistance);
-        dataBaseHelper = new DataBaseHelper(RunGoalActivity.this);
+        runGoalDataBaseHelper = new DataBaseHelper(RunGoalActivity.this);
 
         //button Listeners for the home, add and view all buttons
-        ib_runHome3.setOnClickListener(new View.OnClickListener() {
+        /*ib_runHome3.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
                 Intent i = new Intent(RunGoalActivity.this, MainActivity.class);
                 startActivity(i);
             }
-        });
+        });*/
 
         btn_addRunGoal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                RunGoalModel runGoalModel;
+                RunGoalModel runGoalModel;// = new RunGoalModel(-1, "", 0.0F);
                 try {
                     runGoalModel = new RunGoalModel(-1, et_runTime3.getText().toString(), Float.parseFloat(et_runDistance3.getText().toString()));
                     Toast.makeText(RunGoalActivity.this, runGoalModel.toString(), Toast.LENGTH_SHORT).show();
                 } catch (Exception e) {
                     Toast.makeText(RunGoalActivity.this, "Error adding workout", Toast.LENGTH_SHORT).show();
-                    //runGoalModel = new RunGoalModel(-1, "01-01-2000", "00:00", 0);
+                    runGoalModel = new RunGoalModel(-1, "00:00", 0);
                 }
-                DataBaseHelper runDataBaseHelper = new DataBaseHelper(RunGoalActivity.this);
-                //boolean success = runDataBaseHelper.addRunWorkout(runGoalModel);
-                //Toast.makeText(RunGoalActivity.this, "Success= " + success, Toast.LENGTH_SHORT).show();
+                DataBaseHelper runGoalDataBaseHelper = new DataBaseHelper(RunGoalActivity.this);
+                boolean success = runGoalDataBaseHelper.addRunGoal(runGoalModel);
+                Toast.makeText(RunGoalActivity.this, "Success= " + success, Toast.LENGTH_SHORT).show();
             }
         });
     }

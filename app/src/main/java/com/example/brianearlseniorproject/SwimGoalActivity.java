@@ -1,4 +1,14 @@
 package com.example.brianearlseniorproject;
 
-public class SwimGoalActivity {
+import android.os.Bundle;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+public class SwimGoalActivity extends AppCompatActivity {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_swim_goal);
+
+    }
 }

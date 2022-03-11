@@ -3,7 +3,6 @@ package com.example.brianearlseniorproject;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -14,7 +13,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 public class SwimActivity extends AppCompatActivity {
@@ -40,7 +38,7 @@ public class SwimActivity extends AppCompatActivity {
         et_lapDistance = findViewById(R.id.et_lapDistance);
         //et_lapDistance.setText(0);
         et_swimDistance = findViewById(R.id.et_swimDistance);
-        lv_swimList = findViewById(R.id.lv_runList);
+        lv_swimList = findViewById(R.id.lv_runList3);
         dataBaseHelper = new DataBaseHelper(SwimActivity.this);
         ShowSwimsOnListView(dataBaseHelper);
 
@@ -67,11 +65,11 @@ public class SwimActivity extends AppCompatActivity {
                     float distance = Float.parseFloat(et_swimDistance.getText().toString());
                     float speed = distance / h;
                     swimModel = new SwimModel(-1, et_swimDate.getText().toString(), et_swimTime.getText().toString(), Float.parseFloat(et_swimLaps.getText().toString()),
-                            Float.parseFloat(et_lapDistance.getText().toString()), Float.parseFloat(et_swimDistance.getText().toString()), speed);
+                            Float.parseFloat(et_lapDistance.getText().toString()), distance, speed);
                     Toast.makeText(SwimActivity.this, swimModel.toString(), Toast.LENGTH_SHORT).show();
                 } catch (Exception e) {
                     Toast.makeText(SwimActivity.this, "Error adding workout", Toast.LENGTH_SHORT).show();
-                    swimModel = new SwimModel(-1, "01-01-2000", "00:00", 0, 0, 0, 0);
+                    swimModel = new SwimModel(-1, "01-01-2000", "00:00", 0.0F, 0.0F, 0.0F, 0.0F);
                 }
                 DataBaseHelper dataBaseHelper = new DataBaseHelper(SwimActivity.this);
                 boolean success = dataBaseHelper.addSwimWorkout(swimModel);
@@ -104,7 +102,7 @@ public class SwimActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable editable) {
                 if (!et_swimLaps.getText().toString().isEmpty() && !et_lapDistance.getText().toString().isEmpty())
-                    et_swimDistance.setText(Float.toString(Float.parseFloat(et_swimLaps.getText().toString()) * Float.parseFloat(et_lapDistance.getText().toString())));
+                    et_swimDistance.setText(Float.toString((Float.parseFloat(et_swimLaps.getText().toString()) * Float.parseFloat(et_lapDistance.getText().toString())) / 1760));
                 else
                     et_swimDistance.setText("");
             }
