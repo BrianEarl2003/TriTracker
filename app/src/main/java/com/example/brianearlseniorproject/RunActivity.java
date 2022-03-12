@@ -43,7 +43,9 @@ public class RunActivity extends AppCompatActivity {
     FusedLocationProviderClient fusedLocationProviderClient;
     LocationRequest locationRequest;
     LocationCallback locationCallback;
-    //Location currentLocation;
+    Location currentLocation;
+    Location previousLocation;
+    Double totalDistance;
     //List<Location> savedLocations;
 
     @Override
@@ -60,6 +62,9 @@ public class RunActivity extends AppCompatActivity {
         sw_trackRun = findViewById(R.id.sw_trackRun);
         dataBaseHelper = new DataBaseHelper(RunActivity.this);
         ShowRunsOnListView(dataBaseHelper);
+        currentLocation = null;
+        previousLocation = null;
+        totalDistance = 0.0;
 
         sw_trackRun.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,7 +75,7 @@ public class RunActivity extends AppCompatActivity {
                     //Do something when switch is on/checked
                     sw_trackRun.setText("Tracking On");
 //                    fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(RunActivity.this);
-//
+
                     if (ActivityCompat.checkSelfPermission(RunActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                         //user provided the permission
                         fusedLocationProviderClient.getLastLocation().addOnSuccessListener(RunActivity.this, new OnSuccessListener<Location>() {
@@ -78,10 +83,17 @@ public class RunActivity extends AppCompatActivity {
                             public void onSuccess(Location location) {
                                 //we got permissions. Put the values of location. XXX into the UI components
                                 //updateUIValues(location);
-                                //currentLocation = location;
                                 //MyApplication myApplication = (MyApplication)getApplicationContext();
                                 //savedLocations = myApplication.getMyLocations();
                                 //savedLocations.add(currentLocation);
+                                if (currentLocation == null) {
+                                    currentLocation = location;
+                                }
+                                if (currentLocation != null) {
+                                    previousLocation = currentLocation;
+                                    currentLocation = location;
+                                    totalDistance += distance(previousLocation.getLatitude(), currentLocation.getLatitude(), previousLocation.getLongitude(), currentLocation.getLongitude());
+                                }
                                 Toast.makeText(RunActivity.this, "Lat: " + location.getLatitude() + " Lon: " + location.getLongitude(), Toast.LENGTH_SHORT).show();
                             }
                         });
@@ -89,6 +101,8 @@ public class RunActivity extends AppCompatActivity {
                 } else {
                     //Do something when switch is off/unchecked
                     sw_trackRun.setText("Tracking Off");
+                    if (previousLocation != null)
+                    Toast.makeText(RunActivity.this, "Total Distance: " + totalDistance + " miles", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -192,5 +206,35 @@ public class RunActivity extends AppCompatActivity {
     private void ShowRunsOnListView (DataBaseHelper runDataBaseHelper2) {
         arrayAdapter = new ArrayAdapter<RunModel>(RunActivity.this, android.R.layout.simple_list_item_1, runDataBaseHelper2.getAllRunWorkouts());
         lv_runList.setAdapter(arrayAdapter);
+    }
+
+    // Java program to calculate Distance Between Two Points on Earth
+    public static double distance(double lat1,
+                                  double lat2, double lon1,
+                                  double lon2)
+    {
+
+        // The math module contains a function
+        // named toRadians which converts from
+        // degrees to radians.
+        lon1 = Math.toRadians(lon1);
+        lon2 = Math.toRadians(lon2);
+        lat1 = Math.toRadians(lat1);
+        lat2 = Math.toRadians(lat2);
+
+        // Haversine formula
+        double dlon = lon2 - lon1;
+        double dlat = lat2 - lat1;
+        double a = Math.pow(Math.sin(dlat / 2), 2)
+                + Math.cos(lat1) * Math.cos(lat2)
+                * Math.pow(Math.sin(dlon / 2),2);
+
+        double c = 2 * Math.asin(Math.sqrt(a));
+
+        // Radius of earth in miles. Use 6371 for km
+        double r = 3956;
+
+        // calculate the result
+        return(c * r);
     }
 }
