@@ -28,6 +28,8 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class RunActivity extends AppCompatActivity {
     //references to buttons and other controls on the layout
@@ -46,7 +48,6 @@ public class RunActivity extends AppCompatActivity {
     Location currentLocation;
     Location previousLocation;
     Double totalDistance;
-    //List<Location> savedLocations;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,16 +72,22 @@ public class RunActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //Is the switch is on?
                 boolean on = ((Switch) v).isChecked();
+                Timer timer = new Timer();
                 if (on) {
                     //Do something when switch is on/checked
                     sw_trackRun.setText("Tracking On");
 //                    fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(RunActivity.this);
-
                     if (ActivityCompat.checkSelfPermission(RunActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                         //user provided the permission
+
                         fusedLocationProviderClient.getLastLocation().addOnSuccessListener(RunActivity.this, new OnSuccessListener<Location>() {
                             @Override
                             public void onSuccess(Location location) {
+
+                                timer.schedule(new TimerTask() {
+                                    @Override
+                                    public void run() {
+
                                 //we got permissions. Put the values of location. XXX into the UI components
                                 //updateUIValues(location);
                                 //MyApplication myApplication = (MyApplication)getApplicationContext();
@@ -94,6 +101,11 @@ public class RunActivity extends AppCompatActivity {
                                     currentLocation = location;
                                     totalDistance += distance(previousLocation.getLatitude(), currentLocation.getLatitude(), previousLocation.getLongitude(), currentLocation.getLongitude());
                                 }
+
+                                    }
+                                }, 0, FAST_UPDATE_INTERVAL);//wait 0 ms before doing the action and do it every 5000ms (5 seconds)
+
+                                //Toast.makeText(RunActivity.this, "Total Distance: " + totalDistance + " miles", Toast.LENGTH_SHORT).show();
                                 Toast.makeText(RunActivity.this, "Lat: " + location.getLatitude() + " Lon: " + location.getLongitude(), Toast.LENGTH_SHORT).show();
                             }
                         });
@@ -101,6 +113,7 @@ public class RunActivity extends AppCompatActivity {
                 } else {
                     //Do something when switch is off/unchecked
                     sw_trackRun.setText("Tracking Off");
+                    //timer.cancel();//stop the timer
                     if (previousLocation != null)
                     Toast.makeText(RunActivity.this, "Total Distance: " + totalDistance + " miles", Toast.LENGTH_SHORT).show();
                 }

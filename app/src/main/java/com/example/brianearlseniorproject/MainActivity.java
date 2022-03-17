@@ -96,7 +96,10 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
-
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
         tv_PB_swim_miles.setText(String.format("%.02f miles", dataBaseHelper.getBestSwimWorkout().getSwim_distance()));
         tv_PB_swim_HM.setText(dataBaseHelper.getBestSwimWorkout().getSwim_time());
         tv_PB_bike_miles.setText(String.format("%.02f miles", dataBaseHelper.getBestBikeWorkout().getBike_distance()));

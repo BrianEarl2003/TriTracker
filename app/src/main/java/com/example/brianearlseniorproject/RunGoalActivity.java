@@ -23,19 +23,18 @@ public class RunGoalActivity extends AppCompatActivity {
         setContentView(R.layout.activity_run_goal);
 
         btn_addRunGoal = findViewById(R.id.btn_addRunGoal);
-        ib_runHome3 = findViewById(R.id.ib_runHome);
-        et_runTime3 = findViewById(R.id.et_runTime);
-        et_runDistance3 = findViewById(R.id.et_runDistance);
+        ib_runHome3 = findViewById(R.id.ib_runHome3);
+        et_runTime3 = findViewById(R.id.et_runTime3);
+        et_runDistance3 = findViewById(R.id.et_runDistance3);
         runGoalDataBaseHelper = new DataBaseHelper(RunGoalActivity.this);
 
         //button Listeners for the home, add and view all buttons
-        /*ib_runHome3.setOnClickListener(new View.OnClickListener() {
+        ib_runHome3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(RunGoalActivity.this, MainActivity.class);
-                startActivity(i);
+               finish();
             }
-        });*/
+        });
 
         btn_addRunGoal.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -136,12 +136,24 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         cv.put(RUN_GOAL_TIME, runGoalModel.getRunGoal_time());
         cv.put(RUN_GOAL_DISTANCE, runGoalModel.getRunGoal_distance());
 
-        long insert = db.insert(RUN_GOAL_TABLE, null, cv);
-        if (insert == -1) {
-            return false;
-        } else {
-            return true;
+        if (!runGoalExists()) {
+            long insert = db.insert(RUN_GOAL_TABLE, null, cv);
+            if (insert == -1) {
+                return false;
+            } else {
+                return true;
+            }
         }
+        return db.update(RUN_GOAL_TABLE, cv, RUN_GOAL_ID + "=1", null) > 0;
+    }
+
+    private boolean runGoalExists() {
+        boolean result = false;
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("select " + RUN_GOAL_ID + " FROM " + RUN_GOAL_TABLE + " WHERE " + RUN_GOAL_ID + "=1", null);
+        result = cursor.getCount() > 0;
+        cursor.close();
+        return result;
     }
 
     public boolean deleteSwim(SwimModel swimModel) {
