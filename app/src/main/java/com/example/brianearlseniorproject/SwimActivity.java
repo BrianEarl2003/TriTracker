@@ -46,8 +46,7 @@ public class SwimActivity extends AppCompatActivity {
         ib_swimHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(SwimActivity.this, MainActivity.class);
-                startActivity(i);
+                finish();
             }
         });
 

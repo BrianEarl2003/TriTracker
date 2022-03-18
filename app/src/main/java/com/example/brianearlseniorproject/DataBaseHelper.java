@@ -28,7 +28,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public static final String BIKE_DISTANCE = "BIKE_DISTANCE";
     public static final String BIKE_SPEED = "BIKE_SPEED";
 
-
     public static final String RUN_TABLE = "RUN_TABLE";
     public static final String RUN_ID = "RUN_ID";
     public static final String RUN_DATE = "RUN_DATE";
@@ -36,12 +35,20 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public static final String RUN_DISTANCE = "RUN_DISTANCE";
     public static final String RUN_SPEED = "RUN_SPEED";
 
+    public static final String SWIM_GOAL_TABLE = "SWIM_GOAL_TABLE";
+    public static final String SWIM_GOAL_ID = "SWIM_GOAL_ID";
+    public static final String SWIM_GOAL_TIME = "SWIM_GOAL_TIME";
+    public static final String SWIM_GOAL_DISTANCE = "SWIM_GOAL_DISTANCE";
+
+    public static final String BIKE_GOAL_TABLE = "BIKE_GOAL_TABLE";
+    public static final String BIKE_GOAL_ID = "BIKE_GOAL_ID";
+    public static final String BIKE_GOAL_TIME = "BIKE_GOAL_TIME";
+    public static final String BIKE_GOAL_DISTANCE = "BIKE_GOAL_DISTANCE";
+
     public static final String RUN_GOAL_TABLE = "RUN_GOAL_TABLE";
     public static final String RUN_GOAL_ID = "RUN_GOAL_ID";
     public static final String RUN_GOAL_TIME = "RUN_GOAL_TIME";
     public static final String RUN_GOAL_DISTANCE = "RUN_GOAL_DISTANCE";
-
-
 
     public DataBaseHelper(@Nullable Context context) {
         super(context, "TriTracker.db", null, 1);
@@ -63,12 +70,20 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 " INTEGER PRIMARY KEY AUTOINCREMENT, " + RUN_DATE + " TEXT, " + RUN_TIME +
                 " TEXT, " + RUN_DISTANCE + " REAL, " + RUN_SPEED + " REAL)";
 
+        String createSwimGoalTableStatement = "CREATE TABLE IF NOT EXISTS " + SWIM_GOAL_TABLE + "(" + SWIM_GOAL_ID +
+                " INTEGER PRIMARY KEY AUTOINCREMENT, " + SWIM_GOAL_TIME + " TEXT, " + SWIM_GOAL_DISTANCE + " REAL)";
+
+        String createBikeGoalTableStatement = "CREATE TABLE IF NOT EXISTS " + BIKE_GOAL_TABLE + "(" + BIKE_GOAL_ID +
+                " INTEGER PRIMARY KEY AUTOINCREMENT, " + BIKE_GOAL_TIME + " TEXT, " + BIKE_GOAL_DISTANCE + " REAL)";
+
         String createRunGoalTableStatement = "CREATE TABLE IF NOT EXISTS " + RUN_GOAL_TABLE + "(" + RUN_GOAL_ID +
                 " INTEGER PRIMARY KEY AUTOINCREMENT, " + RUN_GOAL_TIME + " TEXT, " + RUN_GOAL_DISTANCE + " REAL)";
 
         db.execSQL(createSwimTableStatement);
         db.execSQL(createBikeTableStatement);
         db.execSQL(createRunTableStatement);
+        db.execSQL(createSwimGoalTableStatement);
+        db.execSQL(createBikeGoalTableStatement);
         db.execSQL(createRunGoalTableStatement);
     }
 
@@ -127,6 +142,60 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         } else {
             return true;
         }
+    }
+
+    public boolean addSwimGoal(SwimGoalModel swimGoalModel) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+
+        cv.put(SWIM_GOAL_TIME, swimGoalModel.getSwimGoal_time());
+        cv.put(SWIM_GOAL_DISTANCE, swimGoalModel.getSwimGoal_distance());
+
+        if (!swimGoalExists()) {
+            long insert = db.insert(SWIM_GOAL_TABLE, null, cv);
+            if (insert == -1) {
+                return false;
+            } else {
+                return true;
+            }
+        }
+        return db.update(SWIM_GOAL_TABLE, cv, SWIM_GOAL_ID + "=1", null) > 0;
+    }
+
+    private boolean swimGoalExists() {
+        boolean result = false;
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("select " + SWIM_GOAL_ID + " FROM " + SWIM_GOAL_TABLE + " WHERE " + SWIM_GOAL_ID + "=1", null);
+        result = cursor.getCount() > 0;
+        cursor.close();
+        return result;
+    }
+
+    public boolean addBikeGoal(BikeGoalModel bikeGoalModel) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+
+        cv.put(BIKE_GOAL_TIME, bikeGoalModel.getBikeGoal_time());
+        cv.put(BIKE_GOAL_DISTANCE, bikeGoalModel.getBikeGoal_distance());
+
+        if (!bikeGoalExists()) {
+            long insert = db.insert(BIKE_GOAL_TABLE, null, cv);
+            if (insert == -1) {
+                return false;
+            } else {
+                return true;
+            }
+        }
+        return db.update(BIKE_GOAL_TABLE, cv, BIKE_GOAL_ID + "=1", null) > 0;
+    }
+
+    private boolean bikeGoalExists() {
+        boolean result = false;
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("select " + BIKE_GOAL_ID + " FROM " + BIKE_GOAL_TABLE + " WHERE " + BIKE_GOAL_ID + "=1", null);
+        result = cursor.getCount() > 0;
+        cursor.close();
+        return result;
     }
 
     public boolean addRunGoal(RunGoalModel runGoalModel) {
@@ -353,6 +422,46 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         cursor.close();
         db.close();
         return bestRunWorkout;
+    }
+
+    public SwimGoalModel getSwimGoal() {
+        SwimGoalModel swimGoalModel = new SwimGoalModel(-1, "", 0.0F);
+        //get data from database
+        String queryString = "SELECT * FROM SWIM_GOAL_TABLE WHERE SWIM_GOAL_ID = 1";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(queryString, null);
+        if (cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            int swimGoalID = cursor.getInt(0);
+            String swimGoalTime = cursor.getString(1);
+            Float swimGoalDistance = cursor.getFloat(2);
+
+            swimGoalModel = new SwimGoalModel(swimGoalID, swimGoalTime, swimGoalDistance);
+        }
+        //close both the cursor and the db when done.
+        cursor.close();
+        db.close();
+        return swimGoalModel;
+    }
+
+    public BikeGoalModel getBikeGoal() {
+        BikeGoalModel bikeGoalModel = new BikeGoalModel(-1, "", 0.0F);
+        //get data from database
+        String queryString = "SELECT * FROM BIKE_GOAL_TABLE WHERE BIKE_GOAL_ID = 1";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(queryString, null);
+        if (cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            int bikeGoalID = cursor.getInt(0);
+            String bikeGoalTime = cursor.getString(1);
+            Float bikeGoalDistance = cursor.getFloat(2);
+
+            bikeGoalModel = new BikeGoalModel(bikeGoalID, bikeGoalTime, bikeGoalDistance);
+        }
+        //close both the cursor and the db when done.
+        cursor.close();
+        db.close();
+        return bikeGoalModel;
     }
 
     public RunGoalModel getRunGoal() {

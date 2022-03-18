@@ -1,6 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
+    <EditText
+        android:id="@+id/et_swimDistance3"
+        android:layout_width="359dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Total Distance (miles)"
+        android:inputType="numberDecimal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_swimTime3" />
+
+    <EditText
+        android:id="@+id/et_swimTime3"
+        android:layout_width="359dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint=" Time (00:00)"
+        android:inputType="time"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ib_swimHome3" />
+
+    <Button
+        android:id="@+id/btn_addSwimGoal"
+        android:layout_width="96dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="ADD GOAL"
+        app:backgroundTint="#777272"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.65"
+        app:layout_constraintStart_toEndOf="@+id/ib_swimHome3"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/ib_swimHome3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/tri" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

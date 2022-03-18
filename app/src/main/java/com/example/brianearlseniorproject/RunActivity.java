@@ -124,8 +124,7 @@ public class RunActivity extends AppCompatActivity {
         ib_runHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(RunActivity.this, MainActivity.class);
-                startActivity(i);
+                finish();
             }
         });
 

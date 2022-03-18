@@ -107,6 +107,10 @@ public class MainActivity extends AppCompatActivity {
         tv_PB_run_miles.setText(String.format("%.02f miles", dataBaseHelper.getBestRunWorkout().getRun_distance()));
         tv_PB_run_HM.setText(dataBaseHelper.getBestRunWorkout().getRun_time());
 
+        tv_G_swim_miles.setText(String.format("%.02f miles", dataBaseHelper.getSwimGoal().getSwimGoal_distance()));
+        tv_G_swim_HM.setText(dataBaseHelper.getSwimGoal().getSwimGoal_time());
+        tv_G_bike_miles.setText(String.format("%.02f miles", dataBaseHelper.getBikeGoal().getBikeGoal_distance()));
+        tv_G_bike_HM.setText(dataBaseHelper.getBikeGoal().getBikeGoal_time());
         tv_G_run_miles.setText(String.format("%.02f miles", dataBaseHelper.getRunGoal().getRunGoal_distance()));
         tv_G_run_HM.setText(dataBaseHelper.getRunGoal().getRunGoal_time());
     }

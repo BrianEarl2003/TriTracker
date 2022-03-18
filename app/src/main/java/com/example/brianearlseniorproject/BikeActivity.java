@@ -40,8 +40,7 @@ public class BikeActivity extends AppCompatActivity {
         ib_bikeHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(BikeActivity.this, MainActivity.class);
-                startActivity(i);
+                finish();
             }
         });
 
