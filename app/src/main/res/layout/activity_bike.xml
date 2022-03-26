@@ -7,13 +7,23 @@
     tools:context=".BikeActivity">
 
     <ListView
-        android:id="@+id/lv_runList3"
-        android:layout_width="407dp"
-        android:layout_height="494dp"
-        android:background="@drawable/bike"
+        android:id="@+id/lv_bikeList"
+        android:layout_width="412dp"
+        android:layout_height="496dp"
+        android:background="@drawable/bike1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/et_bikeDistance" />
+
+    <Switch
+        android:id="@+id/sw_trackBike"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"
+        android:text="Tracking Off"
+        app:layout_constraintEnd_toStartOf="@+id/ib_bikeHome"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/et_bikeDistance"
@@ -31,7 +41,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint=" Time (00:00)"
+        android:hint=" Time (mm:ss)"
         android:inputType="time"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -42,7 +52,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="Date (MM-DD-YYYY)"
+        android:hint="Date (MM/DD/YYYY)"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

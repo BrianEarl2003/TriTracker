@@ -66,7 +66,7 @@
         app:layout_constraintTop_toBottomOf="@+id/et_lapDistance" />
 
     <ListView
-        android:id="@+id/lv_runList3"
+        android:id="@+id/lv_runList"
         android:layout_width="410dp"
         android:layout_height="375dp"
         android:layout_marginTop="8dp"

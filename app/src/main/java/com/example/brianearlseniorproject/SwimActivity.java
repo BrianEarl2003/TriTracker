@@ -2,7 +2,6 @@ package com.example.brianearlseniorproject;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -38,7 +37,7 @@ public class SwimActivity extends AppCompatActivity {
         et_lapDistance = findViewById(R.id.et_lapDistance);
         //et_lapDistance.setText(0);
         et_swimDistance = findViewById(R.id.et_swimDistance);
-        lv_swimList = findViewById(R.id.lv_runList3);
+        lv_swimList = findViewById(R.id.lv_runList);
         dataBaseHelper = new DataBaseHelper(SwimActivity.this);
         ShowSwimsOnListView(dataBaseHelper);
 

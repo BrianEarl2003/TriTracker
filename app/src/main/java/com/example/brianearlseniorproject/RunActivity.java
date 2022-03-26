@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Build;
@@ -25,20 +24,16 @@ import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
-//import java.util.Timer;
-//import java.util.TimerTask;
 
 public class RunActivity extends AppCompatActivity {
     //references to buttons and other controls on the layout
-    public static final int DEFAULT_UPDATE_INTERVAL = 5000;
-    public static final int FAST_UPDATE_INTERVAL = 1000;
+    public static final int DEFAULT_UPDATE_INTERVAL = 1000;
+    public static final int FAST_UPDATE_INTERVAL = 500;
     public static final String IS_UPDATING = "isUpdating";
     Button btn_addRun;
     ImageButton ib_runHome;
@@ -67,13 +62,12 @@ public class RunActivity extends AppCompatActivity {
         et_runDate = findViewById(R.id.et_runDate);
         et_runTime = findViewById(R.id.et_runTime);
         et_runDistance = findViewById(R.id.et_runDistance);
-        lv_runList = findViewById(R.id.lv_runList3);
+        lv_runList = findViewById(R.id.lv_runList);
         sw_trackRun = findViewById(R.id.sw_trackRun);
         dataBaseHelper = new DataBaseHelper(RunActivity.this);
         ShowRunsOnListView(dataBaseHelper);
         currentLocation = null;
         previousLocation = null;
-
 
         sw_trackRun.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,27 +86,6 @@ public class RunActivity extends AppCompatActivity {
                         startLocService();
                     }
                 } else {
-                    //Do something when switch is off/unchecked
-//                    RunModel runModel;
-//                    try {
-//                        String time = et_runTime.getText().toString();
-//                        String tArr[] = time.split(":");
-//                        float h, mm, ss;
-//                        mm = Float.parseFloat(tArr[0]);
-//                        ss = Float.parseFloat(tArr[1]);
-//                        h = ((ss / 60) + mm)/60;
-//                        float distance = Float.parseFloat(et_runDistance.getText().toString());
-//                        float speed = distance / h;
-//                        runModel = new RunModel(-1, et_runDate.getText().toString(), et_runTime.getText().toString(), Float.parseFloat(et_runDistance.getText().toString()), speed);
-//                        Toast.makeText(RunActivity.this, runModel.toString(), Toast.LENGTH_SHORT).show();
-//                    } catch (Exception e) {
-//                        Toast.makeText(RunActivity.this, "Error adding workout", Toast.LENGTH_SHORT).show();
-//                        runModel = new RunModel(-1, "01-01-2000", "00:00", 0, 0);
-//                    }
-//                    DataBaseHelper runDataBaseHelper = new DataBaseHelper(RunActivity.this);
-//                    boolean success = runDataBaseHelper.addRunWorkout(runModel);
-//                    Toast.makeText(RunActivity.this, "Success= " + success, Toast.LENGTH_SHORT).show();
-//                    ShowRunsOnListView(runDataBaseHelper);
                     sw_trackRun.setText("Tracking Off");
                     fusedLocationProviderClient.removeLocationUpdates(locationCallback);
                     isUpdatingLocation = false;
@@ -142,7 +115,7 @@ public class RunActivity extends AppCompatActivity {
                     float distance = Float.parseFloat(et_runDistance.getText().toString());
                     String speed = String.format("%.2f", distance / h);
                     runModel = new RunModel(-1, et_runDate.getText().toString(), et_runTime.getText().toString(), Float.parseFloat(et_runDistance.getText().toString()), Float.parseFloat(speed));
-                    Toast.makeText(RunActivity.this, runModel.toString(), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(RunActivity.this, runModel.toString(), Toast.LENGTH_SHORT).show();
                 } catch (Exception e) {
                     Toast.makeText(RunActivity.this, "Error adding workout", Toast.LENGTH_SHORT).show();
                     runModel = new RunModel(-1, "01-01-2000", "00:00", 0, 0);
@@ -190,7 +163,7 @@ public class RunActivity extends AppCompatActivity {
                 ss = (trackedTime / 1000) % 60;
                 et_runTime.setText(mm + ":" + ss);
                 et_runDistance.setText(String.format("%.2f", totalDistance));
-                Toast.makeText(RunActivity.this, "Time: " + trackedTime / 1000 + "   Total Distance: " + String.format("%.2f", totalDistance) + " miles", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(RunActivity.this, "Time: " + trackedTime / 1000 + "   Total Distance: " + String.format("%.2f", totalDistance) + " miles", Toast.LENGTH_SHORT).show();
                 previousLocation = currentLocation;
             }
         };
