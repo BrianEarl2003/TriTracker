@@ -27,14 +27,19 @@ import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
+//import java.util.Timer;
+//import java.util.TimerTask;
 
 public class RunActivity extends AppCompatActivity {
     //references to buttons and other controls on the layout
-    public static final int DEFAULT_UPDATE_INTERVAL = 10000;
-    public static final int FAST_UPDATE_INTERVAL = 5000;
+    public static final int DEFAULT_UPDATE_INTERVAL = 5000;
+    public static final int FAST_UPDATE_INTERVAL = 1000;
+    public static final String IS_UPDATING = "isUpdating";
     Button btn_addRun;
     ImageButton ib_runHome;
     EditText et_runDate, et_runTime, et_runDistance;
@@ -47,7 +52,10 @@ public class RunActivity extends AppCompatActivity {
     LocationCallback locationCallback;
     Location currentLocation;
     Location previousLocation;
-    Double totalDistance;
+    double totalDistance;
+    boolean isUpdatingLocation = false;
+    long trackedTime = 0L;
+    long previousTime = 0L;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,57 +73,49 @@ public class RunActivity extends AppCompatActivity {
         ShowRunsOnListView(dataBaseHelper);
         currentLocation = null;
         previousLocation = null;
-        totalDistance = 0.0;
+
 
         sw_trackRun.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //Is the switch is on?
                 boolean on = ((Switch) v).isChecked();
-                Timer timer = new Timer();
                 if (on) {
+                    trackedTime = 0L;
+                    previousTime = 0L;
+                    totalDistance = 0.0;
                     //Do something when switch is on/checked
-                    sw_trackRun.setText("Tracking On");
-//                    fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(RunActivity.this);
-                    if (ActivityCompat.checkSelfPermission(RunActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                        //user provided the permission
-
-                        fusedLocationProviderClient.getLastLocation().addOnSuccessListener(RunActivity.this, new OnSuccessListener<Location>() {
-                            @Override
-                            public void onSuccess(Location location) {
-
-                                timer.schedule(new TimerTask() {
-                                    @Override
-                                    public void run() {
-
-                                //we got permissions. Put the values of location. XXX into the UI components
-                                //updateUIValues(location);
-                                //MyApplication myApplication = (MyApplication)getApplicationContext();
-                                //savedLocations = myApplication.getMyLocations();
-                                //savedLocations.add(currentLocation);
-                                if (currentLocation == null) {
-                                    currentLocation = location;
-                                }
-                                if (currentLocation != null) {
-                                    previousLocation = currentLocation;
-                                    currentLocation = location;
-                                    totalDistance += distance(previousLocation.getLatitude(), currentLocation.getLatitude(), previousLocation.getLongitude(), currentLocation.getLongitude());
-                                }
-
-                                    }
-                                }, 0, FAST_UPDATE_INTERVAL);//wait 0 ms before doing the action and do it every 5000ms (5 seconds)
-
-                                //Toast.makeText(RunActivity.this, "Total Distance: " + totalDistance + " miles", Toast.LENGTH_SHORT).show();
-                                Toast.makeText(RunActivity.this, "Lat: " + location.getLatitude() + " Lon: " + location.getLongitude(), Toast.LENGTH_SHORT).show();
-                            }
-                        });
+                    if (Build.VERSION.SDK_INT >= 23 && checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                        requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+                    } else {
+                        //Req Location Permission
+                        startLocService();
                     }
                 } else {
                     //Do something when switch is off/unchecked
+//                    RunModel runModel;
+//                    try {
+//                        String time = et_runTime.getText().toString();
+//                        String tArr[] = time.split(":");
+//                        float h, mm, ss;
+//                        mm = Float.parseFloat(tArr[0]);
+//                        ss = Float.parseFloat(tArr[1]);
+//                        h = ((ss / 60) + mm)/60;
+//                        float distance = Float.parseFloat(et_runDistance.getText().toString());
+//                        float speed = distance / h;
+//                        runModel = new RunModel(-1, et_runDate.getText().toString(), et_runTime.getText().toString(), Float.parseFloat(et_runDistance.getText().toString()), speed);
+//                        Toast.makeText(RunActivity.this, runModel.toString(), Toast.LENGTH_SHORT).show();
+//                    } catch (Exception e) {
+//                        Toast.makeText(RunActivity.this, "Error adding workout", Toast.LENGTH_SHORT).show();
+//                        runModel = new RunModel(-1, "01-01-2000", "00:00", 0, 0);
+//                    }
+//                    DataBaseHelper runDataBaseHelper = new DataBaseHelper(RunActivity.this);
+//                    boolean success = runDataBaseHelper.addRunWorkout(runModel);
+//                    Toast.makeText(RunActivity.this, "Success= " + success, Toast.LENGTH_SHORT).show();
+//                    ShowRunsOnListView(runDataBaseHelper);
                     sw_trackRun.setText("Tracking Off");
-                    //timer.cancel();//stop the timer
-                    if (previousLocation != null)
-                    Toast.makeText(RunActivity.this, "Total Distance: " + totalDistance + " miles", Toast.LENGTH_SHORT).show();
+                    fusedLocationProviderClient.removeLocationUpdates(locationCallback);
+                    isUpdatingLocation = false;
                 }
             }
         });
@@ -140,8 +140,8 @@ public class RunActivity extends AppCompatActivity {
                     ss = Float.parseFloat(tArr[1]);
                     h = ((ss / 60) + mm)/60;
                     float distance = Float.parseFloat(et_runDistance.getText().toString());
-                    float speed = distance / h;
-                    runModel = new RunModel(-1, et_runDate.getText().toString(), et_runTime.getText().toString(), Float.parseFloat(et_runDistance.getText().toString()), speed);
+                    String speed = String.format("%.2f", distance / h);
+                    runModel = new RunModel(-1, et_runDate.getText().toString(), et_runTime.getText().toString(), Float.parseFloat(et_runDistance.getText().toString()), Float.parseFloat(speed));
                     Toast.makeText(RunActivity.this, runModel.toString(), Toast.LENGTH_SHORT).show();
                 } catch (Exception e) {
                     Toast.makeText(RunActivity.this, "Error adding workout", Toast.LENGTH_SHORT).show();
@@ -169,17 +169,53 @@ public class RunActivity extends AppCompatActivity {
             public void onLocationResult(LocationResult locationResult) {
                 super.onLocationResult(locationResult);
                 //save the location
-                //Toast.makeText(RunActivity.this, String.valueOf(currentLocation.getLatitude()), Toast.LENGTH_SHORT).show();
-                //updateUIValues(locationResult.getLastLocation());
+                currentLocation = locationResult.getLastLocation();
+
+                //Toast.makeText(RunActivity.this, "Lat: " + currentLocation.getLatitude() + " Lon: " + currentLocation.getLongitude(), Toast.LENGTH_SHORT).show();
+                if(previousLocation != null) {
+                    totalDistance += distance(previousLocation.getLatitude(), currentLocation.getLatitude(), previousLocation.getLongitude(), currentLocation.getLongitude());
+                    long currentTime = new Date().getTime();
+                    if (previousTime != 0L) {
+                        trackedTime += (currentTime - previousTime);
+                    }
+                    previousTime = currentTime;
+                }
+                DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+                Calendar cal = Calendar.getInstance();
+                Date date = cal.getTime();
+                String todayDate = dateFormat.format(date);
+                et_runDate.setText(todayDate);
+                long mm, ss;
+                mm = (trackedTime / 1000) / 60;
+                ss = (trackedTime / 1000) % 60;
+                et_runTime.setText(mm + ":" + ss);
+                et_runDistance.setText(String.format("%.2f", totalDistance));
+                Toast.makeText(RunActivity.this, "Time: " + trackedTime / 1000 + "   Total Distance: " + String.format("%.2f", totalDistance) + " miles", Toast.LENGTH_SHORT).show();
+                previousLocation = currentLocation;
             }
         };
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
-        if (Build.VERSION.SDK_INT >= 23 && checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-        } else {
-            //Req Location Permission
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle state) {
+        super.onSaveInstanceState(state);
+        state.putBoolean(IS_UPDATING, isUpdatingLocation);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        fusedLocationProviderClient.removeLocationUpdates(locationCallback);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle state) {
+        super.onRestoreInstanceState(state);
+        if (state.getBoolean(IS_UPDATING, false)) {
             startLocService();
+            sw_trackRun.setChecked(true);
         }
     }
 
@@ -194,12 +230,13 @@ public class RunActivity extends AppCompatActivity {
             // for ActivityCompat#requestPermissions for more details.
             return;
         }
+        isUpdatingLocation = true;
+        sw_trackRun.setText("Tracking On");
         locationRequest = LocationRequest.create();
         locationRequest.setInterval(DEFAULT_UPDATE_INTERVAL);
         locationRequest.setFastestInterval(FAST_UPDATE_INTERVAL);
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, null);
-        //updateGPS();
     }
 
     @Override
