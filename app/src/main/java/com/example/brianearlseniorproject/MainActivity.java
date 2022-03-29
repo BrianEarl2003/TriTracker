@@ -10,9 +10,6 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import com.google.android.material.timepicker.TimeFormat;
-//import com.jjoe64.graphview.GraphView;
-//import com.jjoe64.graphview.series.DataPoint;
-//import com.jjoe64.graphview.series.LineGraphSeries;
 
 public class MainActivity extends AppCompatActivity {
     Button btn_log, btn_swim, btn_bike, btn_run;
@@ -22,7 +19,6 @@ public class MainActivity extends AppCompatActivity {
             tv_G_swim_miles, tv_G_bike_miles, tv_G_run_miles,
             tv_G_swim_HM, tv_G_bike_HM, tv_G_run_HM;
     DataBaseHelper dataBaseHelper;
-    //LineGraphSeries<DataPoint> series;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,19 +95,8 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
-
-//        double y,x;
-//        x = -5.0;
-//
-//        GraphView graph = (GraphView) findViewById(R.id.graph);
-//        series = new LineGraphSeries<DataPoint>();
-//        for (int i = 0; i<500; i++) {
-//            x = x + 0.1;
-//            y = Math.sin(x);
-//            series.appendData(new DataPoint(x, y), true, 500);
-//        }
-//        graph.addSeries(series);
     }
+
     @Override
     protected void onResume() {
         super.onResume();

@@ -7,25 +7,26 @@
 
     <EditText
         android:id="@+id/et_runDistance3"
-        android:layout_width="359dp"
-        android:layout_height="wrap_content"
+        android:layout_width="139dp"
+        android:layout_height="41dp"
         android:ems="10"
-        android:hint="Total Distance (miles)"
+        android:hint="Distance (miles)"
         android:inputType="numberDecimal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_runTime3" />
+        app:layout_constraintBottom_toBottomOf="@+id/ib_runHome3"
+        app:layout_constraintEnd_toStartOf="@+id/ib_runHome3"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
         android:id="@+id/et_runTime3"
-        android:layout_width="359dp"
-        android:layout_height="wrap_content"
+        android:layout_width="132dp"
+        android:layout_height="44dp"
         android:ems="10"
         android:hint=" Time (00:00)"
         android:inputType="time"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/et_runDistance3"
+        app:layout_constraintEnd_toStartOf="@+id/ib_runHome3"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ib_runHome3" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/btn_addRunGoal"
@@ -47,5 +48,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/tri" />
+
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/runChart"
+        android:layout_width="411dp"
+        android:layout_height="627dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ib_runHome3" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -483,4 +483,13 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         db.close();
         return runGoalModel;
     }
+
+    int getRunWeeklyCount() {
+        int result = 0;
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("select * FROM " + RUN_GOAL_TABLE, null);
+        result = cursor.getCount();
+        cursor.close();
+        return result;
+    }
 }
