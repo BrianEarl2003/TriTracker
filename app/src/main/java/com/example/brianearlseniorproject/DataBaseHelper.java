@@ -276,7 +276,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public List<SwimModel> getAllSwimWorkouts() {
         List<SwimModel> returnList = new ArrayList<>();
         //get data from database
-        String queryString = "SELECT * FROM " + SWIM_TABLE;
+        String queryString = "SELECT * FROM " + SWIM_TABLE + " ORDER BY " + SWIM_DATE + " ASC";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(queryString, null);
         if (cursor.moveToFirst()) {
@@ -329,7 +329,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public List<BikeModel> getAllBikeWorkouts() {
         List<BikeModel> returnList = new ArrayList<>();
         //get data from database
-        String queryString = "SELECT * FROM " + BIKE_TABLE;
+        String queryString = "SELECT * FROM " + BIKE_TABLE + " ORDER BY " + BIKE_DATE + " ASC";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(queryString, null);
         if (cursor.moveToFirst()) {
@@ -378,7 +378,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public List<RunModel> getAllRunWorkouts() {
         List<RunModel> returnList = new ArrayList<>();
         //get data from database
-        String queryString = "SELECT * FROM " + RUN_TABLE;
+        String queryString = "SELECT * FROM " + RUN_TABLE + " ORDER BY " + RUN_DATE + " ASC";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(queryString, null);
         if (cursor.moveToFirst()) {
