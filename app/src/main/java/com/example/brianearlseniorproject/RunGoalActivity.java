@@ -37,9 +37,9 @@ public class RunGoalActivity extends AppCompatActivity {
     Button btn_addRunGoal;
     ImageButton ib_runHome3;
     EditText et_runTime3, et_runDistance3;
-    DataBaseHelper runGoalDataBaseHelper;
+//    DataBaseHelper runGoalDataBaseHelper;
 
-    private LineChart weeklyChart;
+//    private LineChart weeklyChart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,12 +50,12 @@ public class RunGoalActivity extends AppCompatActivity {
         ib_runHome3 = findViewById(R.id.ib_runHome3);
         et_runTime3 = findViewById(R.id.et_runTime3);
         et_runDistance3 = findViewById(R.id.et_runDistance3);
-        runGoalDataBaseHelper = new DataBaseHelper(RunGoalActivity.this);
-        weeklyChart = (LineChart) findViewById(R.id.runChart);
-        weeklyChart.setDragEnabled(true);
-        weeklyChart.setScaleEnabled(false);
-        ArrayList<Entry> week = new ArrayList<>();
-        DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+//        runGoalDataBaseHelper = new DataBaseHelper(RunGoalActivity.this);
+//        weeklyChart = (LineChart) findViewById(R.id.runChart);
+//        weeklyChart.setDragEnabled(true);
+//        weeklyChart.setScaleEnabled(false);
+//        ArrayList<Entry> week = new ArrayList<>();
+//        DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
 
 //        List<RunModel> runWorkouts = runGoalDataBaseHelper.getAllRunWorkouts();
 //
@@ -111,31 +111,31 @@ public class RunGoalActivity extends AppCompatActivity {
 //        LineData bikeData = new LineData(bikeDataSets);
 //        weeklyChart.setData(bikeData);
 
-        List<SwimModel> swimWorkouts = runGoalDataBaseHelper.getAllSwimWorkouts();
-
-        for (int i = 0; i < swimWorkouts.size(); i++) {
-            SwimModel swim = swimWorkouts.get(i);
-            String swimDate = swim.getSwim_date();
-            try {
-                long time = dateFormat.parse(swimDate).getTime();
-                week.add(new Entry(time, swim.getSwim_speed()));
-            } catch(Exception e) {
-                e.printStackTrace();
-            }
-        }
-
-        LineDataSet setSwim = new LineDataSet(week, "Weekly Swim");
-
-        setSwim.setFillAlpha(110);
-        setSwim.setColor(Color.BLUE);
-        setSwim.setLineWidth(3f);
-        setSwim.setValueTextSize(10f);
-        setSwim.setValueTextColor(Color.RED);
-
-        ArrayList<ILineDataSet> swimDataSets = new ArrayList<>();
-        swimDataSets.add(setSwim);
-        LineData swimData = new LineData(swimDataSets);
-        weeklyChart.setData(swimData);
+//        List<SwimModel> swimWorkouts = runGoalDataBaseHelper.getAllSwimWorkouts();
+//
+//        for (int i = 0; i < swimWorkouts.size(); i++) {
+//            SwimModel swim = swimWorkouts.get(i);
+//            String swimDate = swim.getSwim_date();
+//            try {
+//                long time = dateFormat.parse(swimDate).getTime();
+//                week.add(new Entry(time, swim.getSwim_speed()));
+//            } catch(Exception e) {
+//                e.printStackTrace();
+//            }
+//        }
+//
+//        LineDataSet setSwim = new LineDataSet(week, "Weekly Swim");
+//
+//        setSwim.setFillAlpha(110);
+//        setSwim.setColor(Color.BLUE);
+//        setSwim.setLineWidth(3f);
+//        setSwim.setValueTextSize(10f);
+//        setSwim.setValueTextColor(Color.RED);
+//
+//        ArrayList<ILineDataSet> swimDataSets = new ArrayList<>();
+//        swimDataSets.add(setSwim);
+//        LineData swimData = new LineData(swimDataSets);
+//        weeklyChart.setData(swimData);
 
 //        final ArrayList<String> xLabel = new ArrayList<>();
 //        xLabel.add("9");

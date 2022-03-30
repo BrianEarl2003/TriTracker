@@ -390,6 +390,111 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_G_run_HM"
         app:srcCompat="@drawable/run1" />
 
+    <Button
+        android:id="@+id/btn_weeklySwim"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="36dp"
+        android:layout_marginLeft="36dp"
+        android:text="week"
+        app:backgroundTint="@color/dark_blue"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ib_swim_goal" />
+
+    <Button
+        android:id="@+id/btn_weeklyBike"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="week"
+        app:backgroundTint="@color/dark_red"
+        app:layout_constraintEnd_toStartOf="@+id/btn_weeklyRun"
+        app:layout_constraintHorizontal_bias="0.493"
+        app:layout_constraintStart_toEndOf="@+id/btn_weeklySwim"
+        app:layout_constraintTop_toBottomOf="@+id/ib_bike_goal" />
+
+    <Button
+        android:id="@+id/btn_weeklyRun"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="36dp"
+        android:layout_marginRight="36dp"
+        android:text="week"
+        app:backgroundTint="@color/dark_green"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ib_run_goal" />
+
+    <Button
+        android:id="@+id/btn_monthlySwim"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="36dp"
+        android:layout_marginLeft="36dp"
+        android:text="Month"
+        app:backgroundTint="@color/dark_blue"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_weeklySwim" />
+
+    <Button
+        android:id="@+id/btn_monthlyBike"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Month"
+        app:backgroundTint="@color/dark_red"
+        app:layout_constraintEnd_toStartOf="@+id/btn_monthlyRun"
+        app:layout_constraintHorizontal_bias="0.493"
+        app:layout_constraintStart_toEndOf="@+id/btn_monthlySwim"
+        app:layout_constraintTop_toBottomOf="@+id/btn_weeklyBike" />
+
+    <Button
+        android:id="@+id/btn_monthlyRun"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="36dp"
+        android:layout_marginRight="36dp"
+        android:text="Month"
+        app:backgroundTint="@color/dark_green"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_weeklyRun" />
+
+    <Button
+        android:id="@+id/btn_yearlySwim"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="36dp"
+        android:layout_marginLeft="36dp"
+        android:text="year"
+        app:backgroundTint="@color/dark_blue"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_monthlySwim"
+        app:layout_constraintVertical_bias="0.108" />
+
+    <Button
+        android:id="@+id/btn_yearlyBike"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="year"
+        app:backgroundTint="@color/dark_red"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btn_yearlyRun"
+        app:layout_constraintHorizontal_bias="0.493"
+        app:layout_constraintStart_toEndOf="@+id/btn_yearlySwim"
+        app:layout_constraintTop_toBottomOf="@+id/btn_monthlyBike"
+        app:layout_constraintVertical_bias="0.129" />
+
+    <Button
+        android:id="@+id/btn_yearlyRun"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="36dp"
+        android:layout_marginRight="36dp"
+        android:text="year"
+        app:backgroundTint="@color/dark_green"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_monthlyRun"
+        app:layout_constraintVertical_bias="0.108" />
+
     <!--com.jjoe64.graphview.GraphView
         android:id="@+id/graph"
         android:layout_width="368dp"

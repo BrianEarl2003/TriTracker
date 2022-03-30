@@ -302,6 +302,35 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return returnList;
     }
 
+//    public List<SwimModel> getWeeklySwimWorkouts() {
+//        List<SwimModel> returnList = new ArrayList<>();
+//        //get data from database
+//        String queryString = "SELECT * FROM " + SWIM_TABLE + " WHERE " + RUN_DATE + " BETWEEN GETDATE()-7 AND GETDATE() " + " ORDER BY " + SWIM_DATE + " ASC";
+//        SQLiteDatabase db = this.getReadableDatabase();
+//        Cursor cursor = db.rawQuery(queryString, null);
+//        if (cursor.moveToFirst()) {
+//            //loop through the cursor (result set) and create new swim objects. Put them into the return list.
+//            do {
+//                int swimID = cursor.getInt(0);
+//                String swimDate = cursor.getString(1);
+//                String swimTime = cursor.getString(2);
+//                Float swimLaps = cursor.getFloat(3);
+//                Float swimLapDistance = cursor.getFloat(4);
+//                Float swimDistance = cursor.getFloat(5);
+//                Float swimSpeed = cursor.getFloat(6);
+//
+//                SwimModel newSwimWorkout = new SwimModel(swimID, swimDate, swimTime, swimLaps, swimLapDistance, swimDistance, swimSpeed);
+//                returnList.add(newSwimWorkout);
+//            } while (cursor.moveToNext());
+//        } else {
+//            //failure. do not add anything to the list.
+//        }
+//        //close both the cursor and the db when done.
+//        cursor.close();
+//        db.close();
+//        return returnList;
+//    }
+
     public SwimModel getBestSwimWorkout() {
         SwimModel bestSwimWorkout = new SwimModel(-1, "", "", 0.0F, 0.0F, 0.0F,0.0F);
         //get data from database
@@ -374,6 +403,33 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         db.close();
         return bestBikeWorkout;
     }
+
+//    public List<RunModel> getWeeklyRunWorkouts() {
+//        List<RunModel> returnList = new ArrayList<>();
+//        //get data from database
+//        String queryString = "SELECT * FROM " + RUN_TABLE + /*" WHERE " + RUN_DATE + " BETWEEN GETDATE()-7 AND GETDATE() +*/ " ORDER BY " + RUN_DATE + " ASC";
+//        SQLiteDatabase db = this.getReadableDatabase();
+//        Cursor cursor = db.rawQuery(queryString, null);
+//        if (cursor.moveToFirst()) {
+//            //loop through the cursor (result set) and create new run objects. Put them into the return list.
+//            do {
+//                int runID = cursor.getInt(0);
+//                String runDate = cursor.getString(1);
+//                String runTime = cursor.getString(2);
+//                Float runDistance = cursor.getFloat(3);
+//                Float runSpeed = cursor.getFloat(4);
+//
+//                RunModel newRunWorkout = new RunModel(runID, runDate, runTime, runDistance, runSpeed);
+//                returnList.add(newRunWorkout);
+//            } while (cursor.moveToNext());
+//        } else {
+//            //failure. do not add anything to the list.
+//        }
+//        //close both the cursor and the db when done.
+//        cursor.close();
+//        db.close();
+//        return returnList;
+//    }
 
     public List<RunModel> getAllRunWorkouts() {
         List<RunModel> returnList = new ArrayList<>();
@@ -484,12 +540,12 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return runGoalModel;
     }
 
-    int getRunWeeklyCount() {
-        int result = 0;
-        SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = db.rawQuery("select * FROM " + RUN_GOAL_TABLE, null);
-        result = cursor.getCount();
-        cursor.close();
-        return result;
-    }
+//    int getRunWeeklyCount() {
+//        int result = 0;
+//        SQLiteDatabase db = getReadableDatabase();
+//        Cursor cursor = db.rawQuery("select * FROM " + RUN_GOAL_TABLE, null);
+//        result = cursor.getCount();
+//        cursor.close();
+//        return result;
+//    }
 }

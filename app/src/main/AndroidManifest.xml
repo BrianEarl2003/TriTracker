@@ -13,6 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BrianEarlSeniorProject">
         <activity
+            android:name=".WeeklyRunActivity"
+            android:exported="false" />
+        <activity
             android:name=".RunGoalActivity"
             android:exported="false" />
         <activity
