@@ -12,6 +12,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
@@ -75,7 +77,14 @@ public class YearlyRunActivity extends AppCompatActivity {
         runDataSets.add(setRun);
         LineData runData = new LineData(runDataSets);
 
+        yearlyRunChart.getXAxis().setAvoidFirstLastClipping(true);
         yearlyRunChart.getXAxis().setValueFormatter(new MyXAxisFormatter());
+        yearlyRunChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
+        yearlyRunChart.getXAxis().setAxisMaximum((float)now.getTimeInMillis());
+        yearlyRunChart.getXAxis().setAxisMinimum((float)min.getTimeInMillis());
+        yearlyRunChart.getXAxis().setLabelCount(12);
+
+        yearlyRunChart.getAxisRight().setDrawLabels(false);
 
         yearlyRunChart.setData(runData);
     }
