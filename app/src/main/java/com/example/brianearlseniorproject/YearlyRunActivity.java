@@ -23,8 +23,10 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class YearlyRunActivity extends AppCompatActivity {
     DataBaseHelper dataBaseHelper;
@@ -42,24 +44,24 @@ public class YearlyRunActivity extends AppCompatActivity {
         yearlyRunChart.setScaleEnabled(false);
         ArrayList<Entry> year = new ArrayList<>();
         DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+        Calendar now = Calendar.getInstance();
+        Calendar min = Calendar.getInstance();
+        min.add(Calendar.YEAR, -1);
 
         List<RunModel> runWorkouts = dataBaseHelper.getAllRunWorkouts();
 
         for (int i = 0; i < runWorkouts.size(); i++) {
             RunModel run = runWorkouts.get(i);
             String runDate = run.getRun_date();
-            long millisDate = System.currentTimeMillis();
-            float now = (float) millisDate / 86400000;
-            float min = now - 360;
             try {
                 long time = dateFormat.parse(runDate).getTime();
-                float day = (float) (time / 86400000);
-                if (day >= min && day <= now)
-                    year.add(new Entry(day, run.getRun_speed()));
+                if (time >= min.getTimeInMillis() && time <= now.getTimeInMillis())
+                    year.add(new Entry(time, run.getRun_speed()));
             } catch(Exception e) {
                 e.printStackTrace();
             }
         }
+        Collections.sort(year, new EntryComparator());
 
         LineDataSet setRun = new LineDataSet(year, "Yearly Run");
 
@@ -79,13 +81,12 @@ public class YearlyRunActivity extends AppCompatActivity {
     }
 
     private static class MyXAxisFormatter extends ValueFormatter {
-        String[] months = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
+        //String[] months = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
         //String[] weeks = {"1", "2", "3", "4"};
         @Override
         public String getAxisLabel(float value, AxisBase axis) {
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(new Date((long) (value * 86400000)));
-            return months[calendar.get(Calendar.MONTH) - 1];
+            Date date = new Date((long) value);
+            return new SimpleDateFormat("MMM", Locale.getDefault()).format(date);
         }
     }
 }

@@ -80,12 +80,12 @@ public class MonthlyRunActivity extends AppCompatActivity {
 
     private static class MyXAxisFormatter extends ValueFormatter {
         //String[] months = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
-        String[] weeks = {"1", "2", "3", "4"};
+        //String[] weeks = {"1", "2", "3", "4"};
         @Override
         public String getAxisLabel(float value, AxisBase axis) {
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(new Date((long) (value * 86400000)));
-            return weeks[calendar.get(Calendar.WEEK_OF_MONTH) - 1];
+            return Integer.toString(calendar.get(Calendar.WEEK_OF_MONTH));
         }
     }
 }
