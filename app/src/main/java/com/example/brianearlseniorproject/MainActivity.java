@@ -115,6 +115,70 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
+
+        btn_weeklySwim.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MainActivity.this, WeeklySwimActivity.class);
+                startActivity(i);
+            }
+        });
+
+        btn_weeklyBike.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MainActivity.this, WeeklyBikeActivity.class);
+                startActivity(i);
+            }
+        });
+
+        btn_monthlyRun.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MainActivity.this, MonthlyRunActivity.class);
+                startActivity(i);
+            }
+        });
+
+        btn_monthlySwim.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MainActivity.this, MonthlySwimActivity.class);
+                startActivity(i);
+            }
+        });
+
+        btn_monthlyBike.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MainActivity.this, MonthlyBikeActivity.class);
+                startActivity(i);
+            }
+        });
+
+        btn_yearlyRun.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MainActivity.this, YearlyRunActivity.class);
+                startActivity(i);
+            }
+        });
+
+        btn_yearlySwim.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MainActivity.this, YearlySwimActivity.class);
+                startActivity(i);
+            }
+        });
+
+        btn_yearlyBike.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MainActivity.this, YearlyBikeActivity.class);
+                startActivity(i);
+            }
+        });
     }
 
     @Override

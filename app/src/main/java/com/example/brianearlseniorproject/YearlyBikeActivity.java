@@ -26,65 +26,66 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class WeeklyRunActivity extends AppCompatActivity {
-    DataBaseHelper runGoalDataBaseHelper;
+public class YearlyBikeActivity extends AppCompatActivity {
+    DataBaseHelper dataBaseHelper;
 
-    private LineChart weeklyRunChart;
+    private LineChart yearlyBikeChart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_weekly_run);
+        setContentView(R.layout.activity_yearly_bike);
 
-        runGoalDataBaseHelper = new DataBaseHelper(WeeklyRunActivity.this);
-        weeklyRunChart = (LineChart) findViewById(R.id.weeklyRunChart);
-        weeklyRunChart.setDragEnabled(true);
-        weeklyRunChart.setScaleEnabled(false);
-        ArrayList<Entry> week = new ArrayList<>();
+        dataBaseHelper = new DataBaseHelper(YearlyBikeActivity.this);
+        yearlyBikeChart = (LineChart) findViewById(R.id.yearlyBikeChart);
+        yearlyBikeChart.setDragEnabled(true);
+        yearlyBikeChart.setScaleEnabled(false);
+        ArrayList<Entry> year = new ArrayList<>();
         DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
 
-        List<RunModel> runWorkouts = runGoalDataBaseHelper.getAllRunWorkouts();
+        List<BikeModel> bikeWorkouts = dataBaseHelper.getAllBikeWorkouts();
 
-        for (int i = 0; i < runWorkouts.size(); i++) {
-            RunModel run = runWorkouts.get(i);
-            String runDate = run.getRun_date();
+        for (int i = 0; i < bikeWorkouts.size(); i++) {
+            BikeModel bike = bikeWorkouts.get(i);
+            String bikeDate = bike.getBike_date();
             long millisDate = System.currentTimeMillis();
             float now = (float) millisDate / 86400000;
-            float min = now - 7;
+            float min = now - 360;
             try {
-                long time = dateFormat.parse(runDate).getTime();
+                long time = dateFormat.parse(bikeDate).getTime();
                 float day = (float) (time / 86400000);
                 if (day >= min && day <= now)
-                    week.add(new Entry(day, run.getRun_speed()));
+                    year.add(new Entry(day, bike.getBike_speed()));
             } catch(Exception e) {
                 e.printStackTrace();
             }
         }
 
-        LineDataSet setRun = new LineDataSet(week, "Weekly Run");
+        LineDataSet setBike = new LineDataSet(year, "Yearly Bike");
 
-        setRun.setFillAlpha(110);
-        setRun.setColor(Color.GREEN);
-        setRun.setLineWidth(3f);
-        setRun.setValueTextSize(10f);
-        setRun.setValueTextColor(Color.GREEN);
+        setBike.setFillAlpha(110);
+        setBike.setColor(Color.RED);
+        setBike.setLineWidth(3f);
+        setBike.setValueTextSize(10f);
+        setBike.setValueTextColor(Color.RED);
 
-        ArrayList<ILineDataSet> runDataSets = new ArrayList<>();
-        runDataSets.add(setRun);
-        LineData runData = new LineData(runDataSets);
+        ArrayList<ILineDataSet> bikeDataSets = new ArrayList<>();
+        bikeDataSets.add(setBike);
+        LineData bikeData = new LineData(bikeDataSets);
 
-        weeklyRunChart.getXAxis().setValueFormatter(new MyXAxisFormatter());
+        yearlyBikeChart.getXAxis().setValueFormatter(new MyXAxisFormatter());
 
-        weeklyRunChart.setData(runData);
+        yearlyBikeChart.setData(bikeData);
     }
 
     private static class MyXAxisFormatter extends ValueFormatter {
-        String[] days = {"Su", "Mo", "Tu", "Wed", "Th", "Fr", "Sa"};
+        String[] months = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
+        //String[] weeks = {"1", "2", "3", "4"};
         @Override
         public String getAxisLabel(float value, AxisBase axis) {
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(new Date((long) (value * 86400000)));
-            return days[calendar.get(Calendar.DAY_OF_WEEK) - 1];
+            return months[calendar.get(Calendar.MONTH) - 1];
         }
     }
 }

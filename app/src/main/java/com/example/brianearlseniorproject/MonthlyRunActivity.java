@@ -26,42 +26,42 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class WeeklyRunActivity extends AppCompatActivity {
-    DataBaseHelper runGoalDataBaseHelper;
+public class MonthlyRunActivity extends AppCompatActivity {
+    DataBaseHelper dataBaseHelper;
 
-    private LineChart weeklyRunChart;
+    private LineChart monthlyRunChart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_weekly_run);
+        setContentView(R.layout.activity_monthly_run);
 
-        runGoalDataBaseHelper = new DataBaseHelper(WeeklyRunActivity.this);
-        weeklyRunChart = (LineChart) findViewById(R.id.weeklyRunChart);
-        weeklyRunChart.setDragEnabled(true);
-        weeklyRunChart.setScaleEnabled(false);
-        ArrayList<Entry> week = new ArrayList<>();
+        dataBaseHelper = new DataBaseHelper(MonthlyRunActivity.this);
+        monthlyRunChart = (LineChart) findViewById(R.id.monthlyRunChart);
+        monthlyRunChart.setDragEnabled(true);
+        monthlyRunChart.setScaleEnabled(false);
+        ArrayList<Entry> month = new ArrayList<>();
         DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
 
-        List<RunModel> runWorkouts = runGoalDataBaseHelper.getAllRunWorkouts();
+        List<RunModel> runWorkouts = dataBaseHelper.getAllRunWorkouts();
 
         for (int i = 0; i < runWorkouts.size(); i++) {
             RunModel run = runWorkouts.get(i);
             String runDate = run.getRun_date();
             long millisDate = System.currentTimeMillis();
             float now = (float) millisDate / 86400000;
-            float min = now - 7;
+            float min = now - 30;
             try {
                 long time = dateFormat.parse(runDate).getTime();
                 float day = (float) (time / 86400000);
                 if (day >= min && day <= now)
-                    week.add(new Entry(day, run.getRun_speed()));
+                    month.add(new Entry(day, run.getRun_speed()));
             } catch(Exception e) {
                 e.printStackTrace();
             }
         }
 
-        LineDataSet setRun = new LineDataSet(week, "Weekly Run");
+        LineDataSet setRun = new LineDataSet(month, "Monthly Run");
 
         setRun.setFillAlpha(110);
         setRun.setColor(Color.GREEN);
@@ -73,18 +73,19 @@ public class WeeklyRunActivity extends AppCompatActivity {
         runDataSets.add(setRun);
         LineData runData = new LineData(runDataSets);
 
-        weeklyRunChart.getXAxis().setValueFormatter(new MyXAxisFormatter());
+        monthlyRunChart.getXAxis().setValueFormatter(new MyXAxisFormatter());
 
-        weeklyRunChart.setData(runData);
+        monthlyRunChart.setData(runData);
     }
 
     private static class MyXAxisFormatter extends ValueFormatter {
-        String[] days = {"Su", "Mo", "Tu", "Wed", "Th", "Fr", "Sa"};
+        //String[] months = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
+        String[] weeks = {"1", "2", "3", "4"};
         @Override
         public String getAxisLabel(float value, AxisBase axis) {
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(new Date((long) (value * 86400000)));
-            return days[calendar.get(Calendar.DAY_OF_WEEK) - 1];
+            return weeks[calendar.get(Calendar.WEEK_OF_MONTH) - 1];
         }
     }
 }

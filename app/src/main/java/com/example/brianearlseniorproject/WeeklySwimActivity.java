@@ -26,56 +26,56 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class WeeklyRunActivity extends AppCompatActivity {
-    DataBaseHelper runGoalDataBaseHelper;
+public class WeeklySwimActivity extends AppCompatActivity {
+    DataBaseHelper swimGoalDataBaseHelper;
 
-    private LineChart weeklyRunChart;
+    private LineChart weeklySwimChart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_weekly_run);
+        setContentView(R.layout.activity_weekly_swim);
 
-        runGoalDataBaseHelper = new DataBaseHelper(WeeklyRunActivity.this);
-        weeklyRunChart = (LineChart) findViewById(R.id.weeklyRunChart);
-        weeklyRunChart.setDragEnabled(true);
-        weeklyRunChart.setScaleEnabled(false);
+        swimGoalDataBaseHelper = new DataBaseHelper(WeeklySwimActivity.this);
+        weeklySwimChart = (LineChart) findViewById(R.id.weeklySwimChart);
+        weeklySwimChart.setDragEnabled(true);
+        weeklySwimChart.setScaleEnabled(false);
         ArrayList<Entry> week = new ArrayList<>();
         DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
 
-        List<RunModel> runWorkouts = runGoalDataBaseHelper.getAllRunWorkouts();
+        List<SwimModel> swimWorkouts = swimGoalDataBaseHelper.getAllSwimWorkouts();
 
-        for (int i = 0; i < runWorkouts.size(); i++) {
-            RunModel run = runWorkouts.get(i);
-            String runDate = run.getRun_date();
+        for (int i = 0; i < swimWorkouts.size(); i++) {
+            SwimModel swim = swimWorkouts.get(i);
+            String swimDate = swim.getSwim_date();
             long millisDate = System.currentTimeMillis();
             float now = (float) millisDate / 86400000;
             float min = now - 7;
             try {
-                long time = dateFormat.parse(runDate).getTime();
+                long time = dateFormat.parse(swimDate).getTime();
                 float day = (float) (time / 86400000);
                 if (day >= min && day <= now)
-                    week.add(new Entry(day, run.getRun_speed()));
+                    week.add(new Entry(day, swim.getSwim_speed()));
             } catch(Exception e) {
                 e.printStackTrace();
             }
         }
 
-        LineDataSet setRun = new LineDataSet(week, "Weekly Run");
+        LineDataSet setSwim = new LineDataSet(week, "Weekly Swim");
 
-        setRun.setFillAlpha(110);
-        setRun.setColor(Color.GREEN);
-        setRun.setLineWidth(3f);
-        setRun.setValueTextSize(10f);
-        setRun.setValueTextColor(Color.GREEN);
+        setSwim.setFillAlpha(110);
+        setSwim.setColor(Color.BLUE);
+        setSwim.setLineWidth(3f);
+        setSwim.setValueTextSize(10f);
+        setSwim.setValueTextColor(Color.BLUE);
 
-        ArrayList<ILineDataSet> runDataSets = new ArrayList<>();
-        runDataSets.add(setRun);
-        LineData runData = new LineData(runDataSets);
+        ArrayList<ILineDataSet> swimDataSets = new ArrayList<>();
+        swimDataSets.add(setSwim);
+        LineData swimData = new LineData(swimDataSets);
 
-        weeklyRunChart.getXAxis().setValueFormatter(new MyXAxisFormatter());
+        weeklySwimChart.getXAxis().setValueFormatter(new MyXAxisFormatter());
 
-        weeklyRunChart.setData(runData);
+        weeklySwimChart.setData(swimData);
     }
 
     private static class MyXAxisFormatter extends ValueFormatter {

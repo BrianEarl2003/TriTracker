@@ -7,10 +7,10 @@
 
     <EditText
         android:id="@+id/et_bikeDistance3"
-        android:layout_width="359dp"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
         android:ems="10"
-        android:hint="Total Distance (miles)"
+        android:hint="Distance (miles)"
         android:inputType="numberDecimal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -18,8 +18,8 @@
 
     <EditText
         android:id="@+id/et_bikeTime3"
-        android:layout_width="359dp"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
         android:ems="10"
         android:hint=" Time (00:00)"
         android:inputType="time"
@@ -29,22 +29,20 @@
 
     <Button
         android:id="@+id/btn_addBikeGoal"
-        android:layout_width="96dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
         android:text="ADD GOAL"
-        app:backgroundTint="#777272"
+        app:backgroundTint="@color/dark_red"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.65"
-        app:layout_constraintStart_toEndOf="@+id/ib_bikeHome3"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_bikeDistance3" />
 
     <ImageButton
         android:id="@+id/ib_bikeHome3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/tri" />

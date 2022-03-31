@@ -16,6 +16,30 @@
             android:name=".WeeklyRunActivity"
             android:exported="false" />
         <activity
+            android:name=".WeeklyBikeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".WeeklySwimActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MonthlyRunActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MonthlyBikeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MonthlySwimActivity"
+            android:exported="false" />
+        <activity
+            android:name=".YearlyRunActivity"
+            android:exported="false" />
+        <activity
+            android:name=".YearlyBikeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".YearlySwimActivity"
+            android:exported="false" />
+        <activity
             android:name=".RunGoalActivity"
             android:exported="false" />
         <activity
