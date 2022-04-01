@@ -68,17 +68,45 @@ public class YearlyRunActivity extends AppCompatActivity {
         LineDataSet setRun = new LineDataSet(year, "Yearly Run");
 
         setRun.setFillAlpha(110);
-        setRun.setColor(Color.BLUE);
+        setRun.setColor(Color.GREEN);
         setRun.setLineWidth(3f);
         setRun.setValueTextSize(10f);
-        setRun.setValueTextColor(Color.BLUE);
+        setRun.setValueTextColor(Color.GREEN);
+
+        ArrayList<Entry> weekGoal = new ArrayList<>();
+        RunGoalModel goal = dataBaseHelper.getRunGoal();
+        try {
+            String goalTime = goal.getRunGoal_time();
+            String tArr[] = goalTime.split(":");
+            float h, mm, ss;
+            mm = Float.parseFloat(tArr[0]);
+            ss = Float.parseFloat(tArr[1]);
+            h = ((ss / 60) + mm)/60;
+            float goalDistance = goal.getRunGoal_distance();
+            float goalSpeed = goalDistance / h;
+            for (int i = 0; i < 366; i++) {
+                Calendar now2 = Calendar.getInstance();
+                now2.add(Calendar.DAY_OF_YEAR, -i);
+                long now3 = now2.getTimeInMillis();
+                weekGoal.add(new Entry((float) now3, goalSpeed));
+            }
+        } catch (Exception e) {e.printStackTrace();}
+        Collections.sort(weekGoal, new EntryComparator());
+        LineDataSet setRunGoal = new LineDataSet(weekGoal, "Run Goal");
+        setRunGoal.setFillAlpha(110);
+        setRunGoal.setColor(Color.BLACK);
+        setRunGoal.setLineWidth(3f);
+        setRunGoal.setValueTextSize(10f);
+        setRunGoal.setValueTextColor(android.R.color.transparent);
 
         ArrayList<ILineDataSet> runDataSets = new ArrayList<>();
+        runDataSets.add(setRunGoal);
         runDataSets.add(setRun);
         LineData runData = new LineData(runDataSets);
 
-        yearlyRunChart.getXAxis().setAvoidFirstLastClipping(true);
         yearlyRunChart.getXAxis().setValueFormatter(new MyXAxisFormatter());
+
+        yearlyRunChart.getXAxis().setAvoidFirstLastClipping(true);
         yearlyRunChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
         yearlyRunChart.getXAxis().setAxisMaximum((float)now.getTimeInMillis());
         yearlyRunChart.getXAxis().setAxisMinimum((float)min.getTimeInMillis());
@@ -90,8 +118,6 @@ public class YearlyRunActivity extends AppCompatActivity {
     }
 
     private static class MyXAxisFormatter extends ValueFormatter {
-        //String[] months = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
-        //String[] weeks = {"1", "2", "3", "4"};
         @Override
         public String getAxisLabel(float value, AxisBase axis) {
             Date date = new Date((long) value);

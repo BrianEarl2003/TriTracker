@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
@@ -23,8 +24,10 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class MonthlyRunActivity extends AppCompatActivity {
     DataBaseHelper dataBaseHelper;
@@ -42,24 +45,24 @@ public class MonthlyRunActivity extends AppCompatActivity {
         monthlyRunChart.setScaleEnabled(false);
         ArrayList<Entry> month = new ArrayList<>();
         DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+        Calendar now = Calendar.getInstance();
+        Calendar min = Calendar.getInstance();
+        min.add(Calendar.MONTH, -1);
 
         List<RunModel> runWorkouts = dataBaseHelper.getAllRunWorkouts();
 
         for (int i = 0; i < runWorkouts.size(); i++) {
             RunModel run = runWorkouts.get(i);
             String runDate = run.getRun_date();
-            long millisDate = System.currentTimeMillis();
-            float now = (float) millisDate / 86400000;
-            float min = now - 30;
             try {
                 long time = dateFormat.parse(runDate).getTime();
-                float day = (float) (time / 86400000);
-                if (day >= min && day <= now)
-                    month.add(new Entry(day, run.getRun_speed()));
+                if (time >= min.getTimeInMillis() && time <= now.getTimeInMillis())
+                    month.add(new Entry(time, run.getRun_speed()));
             } catch(Exception e) {
                 e.printStackTrace();
             }
         }
+        Collections.sort(month, new EntryComparator());
 
         LineDataSet setRun = new LineDataSet(month, "Monthly Run");
 
@@ -69,23 +72,55 @@ public class MonthlyRunActivity extends AppCompatActivity {
         setRun.setValueTextSize(10f);
         setRun.setValueTextColor(Color.GREEN);
 
+        ArrayList<Entry> weekGoal = new ArrayList<>();
+        RunGoalModel goal = dataBaseHelper.getRunGoal();
+        try {
+            String goalTime = goal.getRunGoal_time();
+            String tArr[] = goalTime.split(":");
+            float h, mm, ss;
+            mm = Float.parseFloat(tArr[0]);
+            ss = Float.parseFloat(tArr[1]);
+            h = ((ss / 60) + mm)/60;
+            float goalDistance = goal.getRunGoal_distance();
+            float goalSpeed = goalDistance / h;
+            for (int i = 0; i < 31; i++) {
+                Calendar now2 = Calendar.getInstance();
+                now2.add(Calendar.DAY_OF_MONTH, -i);
+                long now3 = now2.getTimeInMillis();
+                weekGoal.add(new Entry((float) now3, goalSpeed));
+            }
+        } catch (Exception e) {e.printStackTrace();}
+        Collections.sort(weekGoal, new EntryComparator());
+        LineDataSet setRunGoal = new LineDataSet(weekGoal, "Run Goal");
+        setRunGoal.setFillAlpha(110);
+        setRunGoal.setColor(Color.BLACK);
+        setRunGoal.setLineWidth(3f);
+        setRunGoal.setValueTextSize(10f);
+        setRunGoal.setValueTextColor(android.R.color.transparent);
+
         ArrayList<ILineDataSet> runDataSets = new ArrayList<>();
+        runDataSets.add(setRunGoal);
         runDataSets.add(setRun);
         LineData runData = new LineData(runDataSets);
 
         monthlyRunChart.getXAxis().setValueFormatter(new MyXAxisFormatter());
 
+        monthlyRunChart.getXAxis().setAvoidFirstLastClipping(true);
+        monthlyRunChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
+        monthlyRunChart.getXAxis().setAxisMaximum((float)now.getTimeInMillis());
+        monthlyRunChart.getXAxis().setAxisMinimum((float)min.getTimeInMillis());
+        monthlyRunChart.getXAxis().setLabelCount(5);
+
+        monthlyRunChart.getAxisRight().setDrawLabels(false);
+
         monthlyRunChart.setData(runData);
     }
 
     private static class MyXAxisFormatter extends ValueFormatter {
-        //String[] months = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
-        //String[] weeks = {"1", "2", "3", "4"};
         @Override
         public String getAxisLabel(float value, AxisBase axis) {
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(new Date((long) (value * 86400000)));
-            return Integer.toString(calendar.get(Calendar.WEEK_OF_MONTH));
+            Date date = new Date((long) value);
+            return new SimpleDateFormat("W", Locale.getDefault()).format(date);
         }
     }
 }

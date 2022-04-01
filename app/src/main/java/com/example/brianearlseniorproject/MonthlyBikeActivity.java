@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
@@ -23,8 +24,10 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class MonthlyBikeActivity extends AppCompatActivity {
     DataBaseHelper dataBaseHelper;
@@ -42,50 +45,82 @@ public class MonthlyBikeActivity extends AppCompatActivity {
         monthlyBikeChart.setScaleEnabled(false);
         ArrayList<Entry> month = new ArrayList<>();
         DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+        Calendar now = Calendar.getInstance();
+        Calendar min = Calendar.getInstance();
+        min.add(Calendar.MONTH, -1);
 
         List<BikeModel> bikeWorkouts = dataBaseHelper.getAllBikeWorkouts();
 
         for (int i = 0; i < bikeWorkouts.size(); i++) {
             BikeModel bike = bikeWorkouts.get(i);
             String bikeDate = bike.getBike_date();
-            long millisDate = System.currentTimeMillis();
-            float now = (float) millisDate / 86400000;
-            float min = now - 30;
             try {
                 long time = dateFormat.parse(bikeDate).getTime();
-                float day = (float) (time / 86400000);
-                if (day >= min && day <= now)
-                    month.add(new Entry(day, bike.getBike_speed()));
+                if (time >= min.getTimeInMillis() && time <= now.getTimeInMillis())
+                    month.add(new Entry(time, bike.getBike_speed()));
             } catch(Exception e) {
                 e.printStackTrace();
             }
         }
+        Collections.sort(month, new EntryComparator());
 
         LineDataSet setBike = new LineDataSet(month, "Monthly Bike");
 
         setBike.setFillAlpha(110);
-        setBike.setColor(Color.BLUE);
+        setBike.setColor(Color.RED);
         setBike.setLineWidth(3f);
         setBike.setValueTextSize(10f);
-        setBike.setValueTextColor(Color.BLUE);
+        setBike.setValueTextColor(Color.RED);
+
+        ArrayList<Entry> weekGoal = new ArrayList<>();
+        BikeGoalModel goal = dataBaseHelper.getBikeGoal();
+        try {
+            String goalTime = goal.getBikeGoal_time();
+            String tArr[] = goalTime.split(":");
+            float h, mm, ss;
+            mm = Float.parseFloat(tArr[0]);
+            ss = Float.parseFloat(tArr[1]);
+            h = ((ss / 60) + mm)/60;
+            float goalDistance = goal.getBikeGoal_distance();
+            float goalSpeed = goalDistance / h;
+            for (int i = 0; i < 31; i++) {
+                Calendar now2 = Calendar.getInstance();
+                now2.add(Calendar.DAY_OF_MONTH, -i);
+                long now3 = now2.getTimeInMillis();
+                weekGoal.add(new Entry((float) now3, goalSpeed));
+            }
+        } catch (Exception e) {e.printStackTrace();}
+        Collections.sort(weekGoal, new EntryComparator());
+        LineDataSet setBikeGoal = new LineDataSet(weekGoal, "Bike Goal");
+        setBikeGoal.setFillAlpha(110);
+        setBikeGoal.setColor(Color.BLACK);
+        setBikeGoal.setLineWidth(3f);
+        setBikeGoal.setValueTextSize(10f);
+        setBikeGoal.setValueTextColor(android.R.color.transparent);
 
         ArrayList<ILineDataSet> bikeDataSets = new ArrayList<>();
+        bikeDataSets.add(setBikeGoal);
         bikeDataSets.add(setBike);
         LineData bikeData = new LineData(bikeDataSets);
 
         monthlyBikeChart.getXAxis().setValueFormatter(new MyXAxisFormatter());
 
+        monthlyBikeChart.getXAxis().setAvoidFirstLastClipping(true);
+        monthlyBikeChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
+        monthlyBikeChart.getXAxis().setAxisMaximum((float)now.getTimeInMillis());
+        monthlyBikeChart.getXAxis().setAxisMinimum((float)min.getTimeInMillis());
+        monthlyBikeChart.getXAxis().setLabelCount(5);
+
+        monthlyBikeChart.getAxisRight().setDrawLabels(false);
+
         monthlyBikeChart.setData(bikeData);
     }
 
     private static class MyXAxisFormatter extends ValueFormatter {
-        //String[] months = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
-        String[] weeks = {"1", "2", "3", "4"};
         @Override
         public String getAxisLabel(float value, AxisBase axis) {
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(new Date((long) (value * 86400000)));
-            return weeks[calendar.get(Calendar.WEEK_OF_MONTH) - 1];
+            Date date = new Date((long) value);
+            return new SimpleDateFormat("W", Locale.getDefault()).format(date);
         }
     }
 }
