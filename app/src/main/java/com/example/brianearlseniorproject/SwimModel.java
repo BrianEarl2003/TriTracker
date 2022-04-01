@@ -27,8 +27,8 @@ public class SwimModel {
                 "        Time: " + swim_time + " (MM:SS)" /*+
                 "        Laps: " + swim_laps +
                 "\nLap Distance: " + swim_lapDistance + " yards" */+
-                "     Total Distance: " + swim_distance + " miles " +
-                "\nSpeed: " + swim_speed + " mph";
+                "     Distance: " + swim_distance + " miles " +
+                "     Speed: " + swim_speed + " mph";
     }
 
     //getters and setters

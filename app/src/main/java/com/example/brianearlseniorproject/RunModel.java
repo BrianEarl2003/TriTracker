@@ -21,7 +21,7 @@ public class RunModel {
     public String toString() {
         return  "Date: " + run_date +
                 "        Time: " + run_time + " (MM:SS)" +
-                "\nTotal Distance: " + run_distance + " miles " +
+                "\nDistance: " + run_distance + " miles " +
                 "        Speed: " + run_speed + " mph";
     }
 

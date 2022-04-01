@@ -21,7 +21,7 @@ public class BikeModel {
     public String toString() {
         return  "Date: " + bike_date +
                 "        Time: " + bike_time + " (MM:SS)" +
-                "\nTotal Distance: " + bike_distance +
+                "\nDistance: " + bike_distance +
                 " miles        Speed: " + bike_speed + " mph";
     }
 
