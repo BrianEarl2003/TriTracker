@@ -24,9 +24,9 @@ public class SwimModel {
     @Override
     public String toString() {
         return  "Date: " + swim_date +
-                "        Time: " + swim_time + " (MM:SS)" +
+                "        Time: " + swim_time + " (MM:SS)" /*+
                 "        Laps: " + swim_laps +
-                "\nLap Distance: " + swim_lapDistance + " yards" +
+                "\nLap Distance: " + swim_lapDistance + " yards" */+
                 "     Total Distance: " + swim_distance + " miles " +
                 "\nSpeed: " + swim_speed + " mph";
     }
